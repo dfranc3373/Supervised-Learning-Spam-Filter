@@ -2,37 +2,33 @@
 
 require_once("CalculateThreat.php");
 
-class subject extends CalculateThreat{
-	protected $threshold;
-	
-	protected $spamPercent;
+class SubjectThreat extends CalculateThreat{
+
+	protected $parsedData;
 		
-	protected $keywordPercent;
-
-	protected $similarityPercent;
-
-	private $parsedData = array();
+	protected $keywords = Array("money", "prince", "love", "nigeria");
 	
-	private $keywords = Array("money", "prince", "love", "nigeria");
-	
-	private $keywordsContained = Array();
+	protected $keywordsContained = Array();
 	
 	function __constructor(){  // Constructor
 		
 	}
 	
 	public function parseContent($s){
-		$parsedData = explode(' ', $s);
-		print_r($parsedData);
+		$this->parsedData = explode(' ', $s);
+		print_r($this->parsedData);
+		
+		$this->scanKeywords();
 	}
 	
-	private function scanKeywords($parsed){
-	
-		foreach($parsed as $word){
-			if(in_array($word, $keywords) && !in_array($word, $keywordsContained)){
-				array_push($keywordsContained, $word);
+	public function scanKeywords(){
+		
+		foreach($this->parsedData as $word){
+			if(in_array($word, $this->keywords) && !in_array($word, $this->keywordsContained)){
+				array_push($this->keywordsContained, $word);
 			}
 		}
+		print_r($this->keywordsContained);
 	}
 }
 ?>

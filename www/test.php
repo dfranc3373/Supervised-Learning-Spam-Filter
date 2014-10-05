@@ -7,9 +7,9 @@ require_once("../classes/SubjectThreat.php");
 
 
 
-$shittyobject = new subjectThreat();
+$shittyobject = new SubjectThreat();
 
-$shittyobject->parseContent("This is a string");
+$shittyobject->parseContent("This is a string, with keywords money and love");
 
 
 ?>

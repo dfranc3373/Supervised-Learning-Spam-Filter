@@ -24,7 +24,7 @@ class CalculateThreat {
 		
 	}
 
-	public function scanKeywords($parsed) {
+	public function scanKeywords() {
 	
 		//made in new object class
 		

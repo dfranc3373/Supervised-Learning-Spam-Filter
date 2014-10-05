@@ -4,19 +4,11 @@ require_once("CalculateThreat.php");
 
 class addressThreat extends CalculateThreat{
 
-	protected $threshold;
-	
-	protected $spamPercent;
-		
-	protected $keywordPercent;
-
-	protected $similarityPercent;
-
-	private $keywords = Array("money", "prince", "love", "nigeria");
+	protected $keywords = Array("money", "prince", "love", "nigeria");
 
 	protected $parsedData = array();
 	
-	private $keywordsContained = array();
+	protected $keywordsContained = array();
 	
 	function __constructor(){  // Constructor
 		
@@ -26,18 +18,18 @@ class addressThreat extends CalculateThreat{
 		$beforeAT = substr($s, 0, strpos('@') - 1);
 		$afterAT = substr($s, strpos('@') + 1);
 		
-		array_push($parsedData, $beforeAT);
+		array_push($this->parsedData, $beforeAT);
 		
 		$holdArr = explode('.', $afterAT);
 		foreach($holdArr as $word){
-			array_push($parsedData, $word);
+			array_push($this->parsedData, $word);
 		}
 	}
 	
-	private function scanKeywords($parsed){
-		foreach($parsed as $word){
-			if(in_array($word, $keywords) && !in_array($word, $keywordsContained)){
-				array_push($keywordsContained, $word);
+	public function scanKeywords(){
+		foreach($this->parsedData as $word){
+			if(in_array($word, $this->keywords) && !in_array($word, $this->keywordsContained)){
+				array_push($this->keywordsContained, $word);
 			}
 		}
 	}
