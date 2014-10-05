@@ -15,19 +15,19 @@ class Body extends CalculateThreat{
 
     }
     
-    public function ParseContent($Content) {
+    public function parseContent($Content) {
 
         $ParsedData = explode(' ', $parseString);
 
     }
     
-    private function ScanKeywords($parsedData) {
+    private function scanKeywords($ParsedData) {
 
-        $arrLen = count($parsedData);
+        $arrLen = count($ParsedData);
 
         foreach($keywords as $kw){
 
-            if(in_array($parsedData, $kw)) {
+            if(in_array($ParsedData, $kw)) {
 
                 array_push($foundKw, $kw);
 
@@ -37,9 +37,9 @@ class Body extends CalculateThreat{
 
         for($i = 0; $i < $arrLen; $i++) {
 
-            if(strpos($parsedData[$i], 'www.') !== FALSE) {
+            if(strpos($ParsedData[$i], 'www.') !== FALSE) {
 
-                array_push($linkArr, $parsedData[$i]);
+                array_push($linkArr, $ParsedData[$i]);
 
             }
 
