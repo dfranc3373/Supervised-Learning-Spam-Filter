@@ -2,7 +2,7 @@
 
 require_once("CalculateThreat.php");
 
-class Body extends CalculateThreat{
+class BodyThreat extends CalculateThreat{
 
     protected $linkPercent;
     protected $keywords = ["nigeria", "free", "rolex", "viagra", "prince", "love", "enlargement", "techannnounce"];
@@ -17,19 +17,21 @@ class Body extends CalculateThreat{
     
     public function parseContent($Content) {
 
-        $ParsedData = explode(' ', $parseString);
+        $this->ParsedData = explode(' ', $Content);
+        
+        $this->scanKeywords();
 
     }
     
-    private function scanKeywords($ParsedData) {
+    public function scanKeywords() {
 
-        $arrLen = count($ParsedData);
+        $arrLen = count($this->ParsedData);
 
-        foreach($keywords as $kw){
+        foreach($this->keywords as $this->kw){
 
-            if(in_array($ParsedData, $kw)) {
+            if(in_array($this->kw, $this->ParsedData)) {
 
-                array_push($foundKw, $kw);
+                array_push($this->foundKw, $this->kw);
 
             }
 
@@ -37,14 +39,21 @@ class Body extends CalculateThreat{
 
         for($i = 0; $i < $arrLen; $i++) {
 
-            if(strpos($ParsedData[$i], 'www.') !== FALSE) {
+            if(strpos($this->ParsedData[$i], 'www.') !== FALSE) {
 
-                array_push($linkArr, $ParsedData[$i]);
+                array_push($this->linkArr, $this->ParsedData[$i]);
 
             }
 
         }
+        
+        print_r($this->ParsedData);
+        
+        print_r($this->linkArr);
+        
+        print_r($this->foundKw);
 
     }
-
+    
+}
 ?>
