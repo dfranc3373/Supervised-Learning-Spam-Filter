@@ -4,13 +4,13 @@ require_once("CalculateThreat.php")
 
 class addressThreat extends CalculateThreat{
 
-	protected $Threshold;
+	protected $threshold;
 	
-	protected $SpamPercent;
+	protected $spamPercent;
 		
-	protected $KeywordPercent;
+	protected $keywordPercent;
 
-	protected $SimilarityPercent;
+	protected $similarityPercent;
 
 	private $keywords = Array("money", "prince", "love", "nigeria");
 
@@ -22,7 +22,7 @@ class addressThreat extends CalculateThreat{
 		
 	}
 	
-	public function ParseContent($s){
+	public function parseContent($s){
 		$beforeAT = substr($s, 0, strpos('@') - 1);
 		$afterAT = substr($s, strpos('@') + 1);
 		
@@ -34,7 +34,7 @@ class addressThreat extends CalculateThreat{
 		}
 	}
 	
-	private function ScanKeywords($parsed){
+	private function scanKeywords($parsed){
 		foreach($parsed as $word){
 			if(in_array($word, $keywords) && !in_array($word, $keywordsContained)){
 				array_push($keywordsContained, $word);

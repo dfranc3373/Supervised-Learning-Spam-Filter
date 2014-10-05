@@ -3,15 +3,15 @@
 require_once("CalculateThreat.php");
 
 class subject extends CalculateThreat{
-	protected $Threshold;
+	protected $threshold;
 	
-	protected $SpamPercent;
+	protected $spamPercent;
 		
-	protected $KeywordPercent;
+	protected $keywordPercent;
 
-	protected $SimilarityPercent;
+	protected $similarityPercent;
 
-	private $ParsedData = array();
+	private $parsedData = array();
 	
 	private $keywords = Array("money", "prince", "love", "nigeria");
 	
@@ -21,11 +21,11 @@ class subject extends CalculateThreat{
 		
 	}
 	
-	public function ParseContent($s){
-		$ParsedData = explode(' ', $s);
+	public function parseContent($s){
+		$parsedData = explode(' ', $s);
 	}
 	
-	private function ScanKeywords($parsed){
+	private function scanKeywords($parsed){
 	
 		foreach($parsed as $word){
 			if(in_array($word, $keywords) && !in_array($word, $keywordsContained)){
