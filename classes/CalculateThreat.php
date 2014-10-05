@@ -18,13 +18,13 @@ class CalculateThreat {
 	
 	}
 		
-	public function parseContent() {
+	public function parseContent($s) {
 	
 		//made in new object class
 		
 	}
 
-	public function scanKeywords() {
+	public function scanKeywords($parsed) {
 	
 		//made in new object class
 		

@@ -14,7 +14,7 @@ class addressThreat extends CalculateThreat{
 
 	private $keywords = Array("money", "prince", "love", "nigeria");
 
-	private $parsedData = array();
+	protected $parsedData = array();
 	
 	private $keywordsContained = array();
 	
