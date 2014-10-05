@@ -17,7 +17,7 @@ class SubjectThreat extends CalculateThreat{
 	public function parseContent($s){
 		$this->parsedData = explode(' ', $s);
 		print_r($this->parsedData);
-		
+
 		$this->scanKeywords();
 	}
 	
