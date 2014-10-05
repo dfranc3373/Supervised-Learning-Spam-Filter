@@ -20,19 +20,19 @@ class CalculateThreat {
 	
 	}
 		
-	public function parseContent() {
+	public function ParseContent() {
 	
 		//made in new object class
 		
 	}
 
-	public function scanKeywords() {
+	public function ScanKeywords() {
 	
 		//made in new object class
 		
 	}
 
-	public function checkSimilarity() {
+	public function CheckSimilarity() {
 	
 		//made in new object class
 		

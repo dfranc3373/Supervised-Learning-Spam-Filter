@@ -2,54 +2,54 @@
 
 class Analyzer {
 
-	protected $Threshold;
+	protected $threshold;
 	
-	protected $BodyThreat;
+	protected $bodyThreat;
 	
-	protected $SubjectThreat;
+	protected $subjectThreat;
 	
-	protected $AddressThreat;
+	protected $addressThreat;
 
-	protected $OverallThreat;
+	protected $overallThreat;
 
-	protected $Result;
+	protected $result;
 
-	protected $Body;
+	protected $body;
 
-	protected $Subject;
+	protected $subject;
 
-	protected $Address;
+	protected $address;
 	
 	function __construct() { //constructor
 	
-		$this->Threshold = 1;
+		$this->threshold = 1;
 	
 	}
 		
-	public function Analyze($email) {
+	public function analyze($email) {
 	}
 
-	public function Analyze($email, $threshold) {
+	public function analyze($email, $threshold) {
 
 		$this->setThreshold($threshold);
 
-		$this->Analyze($email);
+		$this->analyze($email);
 
 	}
 
-	private function GetThreshold() {
+	private function getThreshold() {
 	
 		return $this->Threshold;
 		
 	}
 
-	private function SetThreshold($t) {
+	private function setThreshold($t) {
 	
 		$this->Threshold = $t;
 		
 	}
 
-	private function CalcOverall($body, $subject, $address) {
+	private function calcOverall($body, $subject, $address) {
 
 	}
 
