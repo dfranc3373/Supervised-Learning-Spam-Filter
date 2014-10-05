@@ -11,5 +11,8 @@ $shittyobject = new SubjectThreat();
 
 $shittyobject->parseContent("This is a string, with keywords money and love");
 
+$shittyobject2 = new AddressThreat();
+
+$shittyobject2->parseContent("prince@ttu.edu");
 
 ?>

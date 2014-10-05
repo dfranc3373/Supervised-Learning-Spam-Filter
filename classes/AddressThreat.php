@@ -15,8 +15,8 @@ class addressThreat extends CalculateThreat{
 	}
 	
 	public function parseContent($s){
-		$beforeAT = substr($s, 0, strpos('@') - 1);
-		$afterAT = substr($s, strpos('@') + 1);
+		$beforeAT = substr($s, 0, strpos($s, '@'));
+		$afterAT = substr($s, strpos($s, '@') + 1);
 		
 		array_push($this->parsedData, $beforeAT);
 		
@@ -24,6 +24,10 @@ class addressThreat extends CalculateThreat{
 		foreach($holdArr as $word){
 			array_push($this->parsedData, $word);
 		}
+		
+		print_r($this->parsedData);
+		
+		$this->scanKeywords();
 	}
 	
 	public function scanKeywords(){
@@ -32,6 +36,8 @@ class addressThreat extends CalculateThreat{
 				array_push($this->keywordsContained, $word);
 			}
 		}
+		
+		print_r($this->keywordsContained);
 	}
 }
 
