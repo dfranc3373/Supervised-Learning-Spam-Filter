@@ -17,12 +17,13 @@ class subject extends CalculateThreat{
 	
 	private $keywordsContained = Array();
 	
-	function __constructor($s){  // Constructor
+	function __constructor(){  // Constructor
 		
 	}
 	
 	public function parseContent($s){
 		$parsedData = explode(' ', $s);
+		print_r($parsedData);
 	}
 	
 	private function scanKeywords($parsed){

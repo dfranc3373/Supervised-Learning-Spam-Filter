@@ -1,6 +1,6 @@
 <?php
 
-require_once("CalculateThreat.php")
+require_once("CalculateThreat.php");
 
 class addressThreat extends CalculateThreat{
 
@@ -18,7 +18,7 @@ class addressThreat extends CalculateThreat{
 	
 	private $keywordsContained = array();
 	
-	function __constructor($s){  // Constructor
+	function __constructor(){  // Constructor
 		
 	}
 	
