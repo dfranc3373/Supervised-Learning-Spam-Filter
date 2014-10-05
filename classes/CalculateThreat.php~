@@ -6,8 +6,6 @@ class CalculateThreat {
 	
 	protected $spamPercent;
 	
-	protected $content;
-	
 	protected $keywordPercent;
 
 	protected $similarityPercent;
@@ -20,19 +18,19 @@ class CalculateThreat {
 	
 	}
 		
-	public function ParseContent() {
+	public function parseContent() {
 	
 		//made in new object class
 		
 	}
 
-	public function ScanKeywords() {
+	public function scanKeywords() {
 	
 		//made in new object class
 		
 	}
 
-	public function CheckSimilarity() {
+	public function checkSimilarity() {
 	
 		//made in new object class
 		

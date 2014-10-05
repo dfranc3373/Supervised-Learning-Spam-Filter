@@ -6,8 +6,6 @@ class CalculateThreat {
 	
 	protected $spamPercent;
 	
-	protected $content;
-	
 	protected $keywordPercent;
 
 	protected $similarityPercent;
