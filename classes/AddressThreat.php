@@ -22,7 +22,7 @@ class addressThreat extends CalculateThreat{
 		
 	}
 	
-	public function parseContent($s){
+	public function ParseContent($s){
 		$beforeAT = substr($s, 0, strpos('@') - 1);
 		$afterAT = substr($s, strpos('@') + 1);
 		
@@ -34,7 +34,7 @@ class addressThreat extends CalculateThreat{
 		}
 	}
 	
-	private function scanKeywords($parsed){
+	private function ScanKeywords($parsed){
 		foreach($parsed as $word){
 			if(in_array($word, $keywords) && !in_array($word, $keywordsContained)){
 				array_push($keywordsContained, $word);

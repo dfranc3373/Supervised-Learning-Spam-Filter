@@ -11,7 +11,7 @@ class subject extends CalculateThreat{
 
 	protected $SimilarityPercent;
 
-	private $parsedData = array();
+	private $ParsedData = array();
 	
 	private $keywords = Array("money", "prince", "love", "nigeria");
 	
@@ -21,8 +21,8 @@ class subject extends CalculateThreat{
 		
 	}
 	
-	public function parseContent($s){
-		$parsedData = explode(' ', $s);
+	public function ParseContent($s){
+		$ParsedData = explode(' ', $s);
 	}
 	
 	private function ScanKeywords($parsed){
