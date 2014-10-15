@@ -33,7 +33,7 @@ class Analyzer {
 		
 	public function analyze($email, $threshold = 1) {
 
-		$mysql = new PDO("mysql:host=localhost;dbname=Learning_Database", 'root', '');
+		global $mysql;
 
 		$this->setThreshold($threshold);
 
