@@ -1,5 +1,7 @@
 <?php
 
+require_once("sql.php");
+
 require_once("CalculateThreat.php");
 
 class BodyThreat extends CalculateThreat{
@@ -32,7 +34,9 @@ class BodyThreat extends CalculateThreat{
     }
     
     public function scanKeywords() {
-
+		
+		global $mysql;
+		
         $arrLen = count($this->ParsedData);
 
         foreach($this->keywords as $this->kw){

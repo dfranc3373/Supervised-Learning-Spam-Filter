@@ -1,5 +1,7 @@
 <?php
 
+require_once("sql.php");
+
 require_once("CalculateThreat.php");
 
 class addressThreat extends CalculateThreat{
@@ -39,6 +41,8 @@ class addressThreat extends CalculateThreat{
 	}
 	
 	public function scanKeywords(){
+	
+		global $mysql;
 	
 		foreach($this->parsedData as $word){
 			if(in_array($word, $this->keywords) && !in_array($word, $this->keywordsContained)){
