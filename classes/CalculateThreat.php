@@ -11,12 +11,6 @@ abstract class CalculateThreat {
 	protected $similarityPercent;
 
 	protected $parsedData;
-	
-	function __construct() { //constructor
-	
-		
-	
-	}
 		
 	public function parseContent($s) {
 	
