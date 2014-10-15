@@ -1,20 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.10deb1
+-- version 4.2.5
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Oct 15, 2014 at 05:17 PM
--- Server version: 5.5.38-0ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4.4
+-- Host: localhost:8889
+-- Generation Time: Oct 16, 2014 at 01:37 AM
+-- Server version: 5.5.38
+-- PHP Version: 5.5.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `Learning_Database`
@@ -26,8 +20,8 @@ SET time_zone = "+00:00";
 -- Table structure for table `Emails`
 --
 
-CREATE TABLE IF NOT EXISTS `Emails` (
-  `Email_ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `Emails` (
+`Email_ID` int(11) NOT NULL,
   `ThresholdID` int(11) DEFAULT NULL,
   `Body` text,
   `Subject` text NOT NULL,
@@ -36,10 +30,82 @@ CREATE TABLE IF NOT EXISTS `Emails` (
   `SpamFlag` int(1) NOT NULL DEFAULT '0',
   `PercentageSpamFound` int(11) NOT NULL,
   `DateFound` timestamp NULL DEFAULT NULL,
-  `DateReceived` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`Email_ID`),
-  KEY `ThresholdID` (`ThresholdID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `DateReceived` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=69 ;
+
+--
+-- Dumping data for table `Emails`
+--
+
+INSERT INTO `Emails` (`Email_ID`, `ThresholdID`, `Body`, `Subject`, `EmailTo`, `EmailFrom`, `SpamFlag`, `PercentageSpamFound`, `DateFound`, `DateReceived`) VALUES
+(1, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:44:43', '2014-10-16 05:44:43'),
+(2, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:45:29', '2014-10-16 05:45:29'),
+(3, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:46:38', '2014-10-16 05:46:38'),
+(4, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:46:39', '2014-10-16 05:46:39'),
+(5, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:46:43', '2014-10-16 05:46:43'),
+(6, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:47:05', '2014-10-16 05:47:05'),
+(7, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:47:39', '2014-10-16 05:47:39'),
+(8, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:47:40', '2014-10-16 05:47:40'),
+(9, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:48:00', '2014-10-16 05:48:00'),
+(10, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:48:25', '2014-10-16 05:48:25'),
+(11, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:48:26', '2014-10-16 05:48:26'),
+(12, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:48:57', '2014-10-16 05:48:57'),
+(13, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:49:08', '2014-10-16 05:49:08'),
+(14, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:49:47', '2014-10-16 05:49:47'),
+(15, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:50:11', '2014-10-16 05:50:11'),
+(16, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:50:26', '2014-10-16 05:50:26'),
+(17, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:50:56', '2014-10-16 05:50:56'),
+(18, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:51:21', '2014-10-16 05:51:21'),
+(19, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:51:30', '2014-10-16 05:51:30'),
+(20, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:52:18', '2014-10-16 05:52:18'),
+(21, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:52:26', '2014-10-16 05:52:26'),
+(22, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:53:10', '2014-10-16 05:53:10'),
+(23, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:54:19', '2014-10-16 05:54:19'),
+(24, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:57:14', '2014-10-16 05:57:14'),
+(25, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:57:53', '2014-10-16 05:57:53'),
+(26, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:58:28', '2014-10-16 05:58:28'),
+(27, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 05:59:53', '2014-10-16 05:59:53'),
+(28, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:01:18', '2014-10-16 06:01:18'),
+(29, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:01:53', '2014-10-16 06:01:53'),
+(30, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:02:30', '2014-10-16 06:02:30'),
+(31, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:02:52', '2014-10-16 06:02:52'),
+(32, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:03:43', '2014-10-16 06:03:43'),
+(33, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:05:06', '2014-10-16 06:05:06'),
+(34, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:06:19', '2014-10-16 06:06:19'),
+(35, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:06:37', '2014-10-16 06:06:37'),
+(36, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:06:56', '2014-10-16 06:06:56'),
+(37, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:07:13', '2014-10-16 06:07:13'),
+(38, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:07:22', '2014-10-16 06:07:22'),
+(39, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:08:00', '2014-10-16 06:08:00'),
+(40, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:08:38', '2014-10-16 06:08:38'),
+(41, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:09:53', '2014-10-16 06:09:53'),
+(42, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:10:01', '2014-10-16 06:10:01'),
+(43, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:12:15', '2014-10-16 06:12:15'),
+(44, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:12:19', '2014-10-16 06:12:19'),
+(45, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:13:25', '2014-10-16 06:13:25'),
+(46, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:14:26', '2014-10-16 06:14:26'),
+(47, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:16:17', '2014-10-16 06:16:17'),
+(48, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:17:38', '2014-10-16 06:17:38'),
+(49, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:20:07', '2014-10-16 06:20:07'),
+(50, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:20:50', '2014-10-16 06:20:50'),
+(51, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:21:06', '2014-10-16 06:21:06'),
+(52, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:22:40', '2014-10-16 06:22:40'),
+(53, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:22:53', '2014-10-16 06:22:53'),
+(54, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:23:54', '2014-10-16 06:23:54'),
+(55, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:23:55', '2014-10-16 06:23:55'),
+(56, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:24:08', '2014-10-16 06:24:08'),
+(57, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:25:06', '2014-10-16 06:25:06'),
+(58, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:26:56', '2014-10-16 06:26:56'),
+(59, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:27:12', '2014-10-16 06:27:12'),
+(60, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:29:16', '2014-10-16 06:29:16'),
+(61, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:29:27', '2014-10-16 06:29:27'),
+(62, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:30:30', '2014-10-16 06:30:30'),
+(63, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:31:16', '2014-10-16 06:31:16'),
+(64, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:31:59', '2014-10-16 06:31:59'),
+(65, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:32:35', '2014-10-16 06:32:35'),
+(66, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:33:06', '2014-10-16 06:33:06'),
+(67, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:34:30', '2014-10-16 06:34:30'),
+(68, 1, 'This is a string, with keywords porn ass and bitch with a link www.google.com', 'This is a string, with keywords ass and bitch', '', '', 0, 0, '2014-10-16 06:36:12', '2014-10-16 06:36:12');
 
 -- --------------------------------------------------------
 
@@ -47,14 +113,22 @@ CREATE TABLE IF NOT EXISTS `Emails` (
 -- Table structure for table `KeywordCount`
 --
 
-CREATE TABLE IF NOT EXISTS `KeywordCount` (
-  `KeywordCount_ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `KeywordCount` (
+`KeywordCount_ID` int(11) NOT NULL,
   `Keyword_ID` int(11) NOT NULL,
   `Email_ID` int(11) NOT NULL,
-  `Runtime` text,
-  PRIMARY KEY (`KeywordCount_ID`),
-  KEY `Keyword_ID` (`Keyword_ID`,`Email_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `Runtime` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `KeywordCount`
+--
+
+INSERT INTO `KeywordCount` (`KeywordCount_ID`, `Keyword_ID`, `Email_ID`, `Runtime`) VALUES
+(1, 14, 1, NULL),
+(2, 22, 1, NULL),
+(3, 14, 1, '2014-10-16 06:36:12'),
+(4, 22, 1, '2014-10-16 06:36:12');
 
 -- --------------------------------------------------------
 
@@ -62,14 +136,13 @@ CREATE TABLE IF NOT EXISTS `KeywordCount` (
 -- Table structure for table `Keywords`
 --
 
-CREATE TABLE IF NOT EXISTS `Keywords` (
-  `Keyword_ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `Keywords` (
+`Keyword_ID` int(11) NOT NULL,
   `Keyword` text NOT NULL,
   `BasePercentage` int(11) NOT NULL,
   `ActualPercentage` int(11) NOT NULL,
-  `LastRunTime` text,
-  PRIMARY KEY (`Keyword_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=209 ;
+  `LastRunTime` text
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=208 ;
 
 --
 -- Dumping data for table `Keywords`
@@ -289,11 +362,10 @@ INSERT INTO `Keywords` (`Keyword_ID`, `Keyword`, `BasePercentage`, `ActualPercen
 -- Table structure for table `Thresholds`
 --
 
-CREATE TABLE IF NOT EXISTS `Thresholds` (
-  `Theshold_ID` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `Thresholds` (
+`Theshold_ID` int(11) NOT NULL,
   `ThresholdLevel` int(1) NOT NULL,
-  `ThesholdPercentage` text NOT NULL,
-  PRIMARY KEY (`Theshold_ID`)
+  `ThesholdPercentage` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -302,13 +374,11 @@ CREATE TABLE IF NOT EXISTS `Thresholds` (
 -- Table structure for table `TotalNonSpamKeywordOccurrences`
 --
 
-CREATE TABLE IF NOT EXISTS `TotalNonSpamKeywordOccurrences` (
+CREATE TABLE `TotalNonSpamKeywordOccurrences` (
   `TotalNonSpamKeywordOccurrences_ID` int(11) NOT NULL,
   `Keyword_ID` int(11) NOT NULL,
   `LastTimeCounted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `Total` int(11) NOT NULL,
-  PRIMARY KEY (`TotalNonSpamKeywordOccurrences_ID`),
-  KEY `Keyword_ID` (`Keyword_ID`)
+  `Total` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -317,15 +387,77 @@ CREATE TABLE IF NOT EXISTS `TotalNonSpamKeywordOccurrences` (
 -- Table structure for table `TotalSpamKeywordOccurrences`
 --
 
-CREATE TABLE IF NOT EXISTS `TotalSpamKeywordOccurrences` (
+CREATE TABLE `TotalSpamKeywordOccurrences` (
   `TotalSpamKeywordOccurrences_ID` int(11) NOT NULL,
   `Keyword_ID` int(11) NOT NULL,
   `LastTimeCounted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `Total` int(11) NOT NULL,
-  PRIMARY KEY (`TotalSpamKeywordOccurrences_ID`),
-  KEY `Keyword_ID` (`Keyword_ID`)
+  `Total` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `Emails`
+--
+ALTER TABLE `Emails`
+ ADD PRIMARY KEY (`Email_ID`), ADD KEY `ThresholdID` (`ThresholdID`);
+
+--
+-- Indexes for table `KeywordCount`
+--
+ALTER TABLE `KeywordCount`
+ ADD PRIMARY KEY (`KeywordCount_ID`), ADD KEY `Keyword_ID` (`Keyword_ID`,`Email_ID`);
+
+--
+-- Indexes for table `Keywords`
+--
+ALTER TABLE `Keywords`
+ ADD PRIMARY KEY (`Keyword_ID`);
+
+--
+-- Indexes for table `Thresholds`
+--
+ALTER TABLE `Thresholds`
+ ADD PRIMARY KEY (`Theshold_ID`);
+
+--
+-- Indexes for table `TotalNonSpamKeywordOccurrences`
+--
+ALTER TABLE `TotalNonSpamKeywordOccurrences`
+ ADD PRIMARY KEY (`TotalNonSpamKeywordOccurrences_ID`), ADD KEY `Keyword_ID` (`Keyword_ID`);
+
+--
+-- Indexes for table `TotalSpamKeywordOccurrences`
+--
+ALTER TABLE `TotalSpamKeywordOccurrences`
+ ADD PRIMARY KEY (`TotalSpamKeywordOccurrences_ID`), ADD KEY `Keyword_ID` (`Keyword_ID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `Emails`
+--
+ALTER TABLE `Emails`
+MODIFY `Email_ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=69;
+--
+-- AUTO_INCREMENT for table `KeywordCount`
+--
+ALTER TABLE `KeywordCount`
+MODIFY `KeywordCount_ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `Keywords`
+--
+ALTER TABLE `Keywords`
+MODIFY `Keyword_ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=208;
+--
+-- AUTO_INCREMENT for table `Thresholds`
+--
+ALTER TABLE `Thresholds`
+MODIFY `Theshold_ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
@@ -334,14 +466,10 @@ CREATE TABLE IF NOT EXISTS `TotalSpamKeywordOccurrences` (
 -- Constraints for table `TotalNonSpamKeywordOccurrences`
 --
 ALTER TABLE `TotalNonSpamKeywordOccurrences`
-  ADD CONSTRAINT `TotalNonSpamKeywordOccurrences_ibfk_1` FOREIGN KEY (`Keyword_ID`) REFERENCES `Keywords` (`Keyword_ID`);
+ADD CONSTRAINT `TotalNonSpamKeywordOccurrences_ibfk_1` FOREIGN KEY (`Keyword_ID`) REFERENCES `Keywords` (`Keyword_ID`);
 
 --
 -- Constraints for table `TotalSpamKeywordOccurrences`
 --
 ALTER TABLE `TotalSpamKeywordOccurrences`
-  ADD CONSTRAINT `TotalSpamKeywordOccurrences_ibfk_1` FOREIGN KEY (`Keyword_ID`) REFERENCES `Keywords` (`Keyword_ID`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+ADD CONSTRAINT `TotalSpamKeywordOccurrences_ibfk_1` FOREIGN KEY (`Keyword_ID`) REFERENCES `Keywords` (`Keyword_ID`);
