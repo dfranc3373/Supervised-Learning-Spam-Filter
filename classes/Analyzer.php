@@ -3,6 +3,7 @@
 require_once("BodyThreat.php");
 require_once("AddressThreat.php");
 require_once("SubjectThreat.php");
+require_once("sql.php");
 
 class Analyzer {
 
@@ -34,11 +35,16 @@ class Analyzer {
 
 		$this->setThreshold($threshold);
 
-		$bodyobject = new BodyThreat();
+		$sth = $mysql->prepare("SELECT `keyword` FROM `Keywords`");
 
-		$subjectobject = new SubjectThreat();
+		$keywords = $sth->fetchAll();
 
-		$addressobject = new AddressThreat();
+		//OBJECTS
+			$bodyobject = new BodyThreat($keywords);
+
+			$subjectobject = new SubjectThreat($keywords);
+
+			$addressobject = new AddressThreat($keywords);
 
 		$subjectobject->parseContent($email->subject);
 

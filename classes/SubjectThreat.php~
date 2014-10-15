@@ -18,7 +18,7 @@ class SubjectThreat extends CalculateThreat{
 	
 	protected $keywordsContained = Array();
 	
-	function __constructor() {  // Constructor
+	function __constructor(){  // Constructor
 		
 	}
 	
