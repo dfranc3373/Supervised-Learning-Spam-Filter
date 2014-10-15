@@ -15,15 +15,13 @@ class BodyThreat extends CalculateThreat{
 	protected $parsedData;
 
     protected $linkPercent;
-    protected $keywords = ["nigeria", "free", "rolex", "viagra", "prince", "love", "enlargement", "techannnounce"];
-    protected $linkArr = array();
-    protected $foundKw = array();
+    protected $keywords = Array();
+    protected $linkArr = Array();
+    protected $foundKw = Array();
     
-    public function __construct() {
-
-        //constructor content goes here
-
-    }
+    function __constructor($keywordArr){  // Constructor
+		$this->keywords = $keywordArr;
+	}
     
     public function parseContent($Content) {
 
@@ -41,7 +39,7 @@ class BodyThreat extends CalculateThreat{
 
             if(in_array($this->kw, $this->ParsedData)) {
 
-                array_push($this->foundKw, $this->kw);
+                array_push($this->foundKw, strtolower($this->kw));
 
             }
 
