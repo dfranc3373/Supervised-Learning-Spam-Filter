@@ -1,6 +1,6 @@
 <?php
 
-class CalculateThreat {
+abstract class CalculateThreat {
 
 	protected $threshold;
 	

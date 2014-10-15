@@ -4,6 +4,14 @@ require_once("CalculateThreat.php");
 
 class addressThreat extends CalculateThreat{
 
+	protected $threshold;
+	
+	protected $spamPercent;
+	
+	protected $keywordPercent;
+
+	protected $similarityPercent;
+
 	protected $keywords = Array("money", "prince", "love", "nigeria");
 
 	protected $parsedData = array();
@@ -38,6 +46,12 @@ class addressThreat extends CalculateThreat{
 		}
 		
 		print_r($this->keywordsContained);
+	}
+	
+	public function checkSimilarity() {
+	
+		//made in new object class
+		
 	}
 }
 
