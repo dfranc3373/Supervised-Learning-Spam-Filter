@@ -1,22 +1,19 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+require_once("../classes/Email.php");
+require_once("../classes/Analyzer.php");
 
-require_once("../classes/BodyThreat.php");
-require_once("../classes/SubjectThreat.php");
-require_once("../classes/AddressThreat.php");
+	$e = new Email();
 
-$bodyobject = new BodyThreat();
+	$analyzer = new Analyzer();
 
-$subjectobject = new SubjectThreat();
+	$e->address = "prince@ttu.edu";
 
-$subjectobject->parseContent("This is a string, with keywords money and love");
+	$e->subject = "This is a string, with keywords money and love";
 
-$addressobject2 = new AddressThreat();
+	$e->body = "This is a string, with keywords free and love with a link www.google.com";
 
-$addressobject2->parseContent("prince@ttu.edu");
+	$analyzer->analyze($e);
 
-$bodyobject->parseContent("This is a string, with keywords free and love with a link www.google.com");
 
 ?>

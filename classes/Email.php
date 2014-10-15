@@ -2,11 +2,11 @@
 
 class Email {
 
-	public $Body;
+	public $body;
 	
-	public $Subject;
+	public $subject;
 
-	public $Address;
+	public $address;
 	
 	function __construct() { //constructor
 
