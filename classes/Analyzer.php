@@ -24,14 +24,16 @@ class Analyzer {
 	protected $subject;
 
 	protected $address;
-	
+
 	function __construct() { //constructor
-	
+
 		$this->threshold = 1;
 	
 	}
 		
 	public function analyze($email, $threshold = 1) {
+
+		$mysql = new PDO("mysql:host=localhost;dbname=Learning_Database", 'root', '');
 
 		$this->setThreshold($threshold);
 

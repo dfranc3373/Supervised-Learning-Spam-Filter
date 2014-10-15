@@ -24,14 +24,16 @@ class Analyzer {
 	protected $subject;
 
 	protected $address;
-	
+
 	function __construct() { //constructor
-	
+
 		$this->threshold = 1;
 	
 	}
 		
 	public function analyze($email, $threshold = 1) {
+
+		$mysql = new PDO("mysql:host=localhost;dbname=Learning_Database", 'root', '');
 
 		$this->setThreshold($threshold);
 
@@ -39,11 +41,12 @@ class Analyzer {
 
 		$keywords = $sth->fetchAll();
 
-		$bodyobject = new BodyThreat($keywords);
+		//OBJECTS
+			$bodyobject = new BodyThreat($keywords);
 
-		$subjectobject = new SubjectThreat($keywords);
+			$subjectobject = new SubjectThreat($keywords);
 
-		$addressobject = new AddressThreat($keywords);
+			$addressobject = new AddressThreat($keywords);
 
 		$subjectobject->parseContent($email->subject);
 
