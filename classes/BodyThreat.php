@@ -58,10 +58,7 @@ class BodyThreat extends CalculateThreat{
             }
 
         }
-        
-        print_r($this->ParsedData);
-        
-        print_r($this->linkArr);
+
         
         print_r($this->foundKw);
 

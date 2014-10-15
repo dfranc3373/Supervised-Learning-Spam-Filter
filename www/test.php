@@ -12,9 +12,9 @@ require_once("../classes/Analyzer.php");
 
 	$e->address = "prince@ttu.edu";
 
-	$e->subject = "This is a string, with keywords money and love";
+	$e->subject = "This is a string, with keywords ass and bitch";
 
-	$e->body = "This is a string, with keywords free and love with a link www.google.com";
+	$e->body = "This is a string, with keywords porn ass and bitch with a link www.google.com";
 
 	$analyzer->analyze($e);
 

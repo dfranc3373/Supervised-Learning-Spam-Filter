@@ -12,7 +12,7 @@ abstract class CalculateThreat {
 
 	protected $parsedData;
 		
-	public function parseContent($s) {
+	public function parseContent($keywordArr, $emailID, $s) {
 	
 		//made in new object class
 		

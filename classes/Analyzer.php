@@ -53,19 +53,21 @@ class Analyzer {
 		$date = date('Y-m-d H:i:s', time());
 
 		$sth_email->execute(array(':ThresholdID' => $this->threshold, ':body' => $email->body, ':subject' => $email->subject, ':emailTo' => "", ':emailFrom' => "", ':percentageSpamFound' => '0', ':dateFound' => $date, ':dateReceived' => $date));
-
+		
+		$new = $keywords;
+				
 		//OBJECTS
-			$bodyobject = new BodyThreat($keywords, 1);
+			//$bodyobject = new BodyThreat($keywords, 1);
 
-			$subjectobject = new SubjectThreat($keywords, 1);
+			$subjectobject = new SubjectThreat();
 
-			$addressobject = new AddressThreat($keywords, 1);
+			//$addressobject = new AddressThreat($keywords, 1);
 
-		$subjectobject->parseContent($email->subject);
+		$subjectobject->parseContent($new, 1, $email->subject);
 
-		$addressobject->parseContent($email->address);
+		//$addressobject->parseContent($email->address);
 
-		$bodyobject->parseContent($email->body);
+		//$bodyobject->parseContent($email->body);
 
 		return 1;
 

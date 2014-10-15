@@ -34,9 +34,7 @@ class addressThreat extends CalculateThreat{
 		foreach($holdArr as $word){
 			array_push($this->parsedData, $word);
 		}
-		
-		print_r($this->parsedData);
-		
+				
 		$this->scanKeywords();
 	}
 	
