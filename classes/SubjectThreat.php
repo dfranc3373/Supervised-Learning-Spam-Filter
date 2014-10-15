@@ -14,12 +14,12 @@ class SubjectThreat extends CalculateThreat{
 
 	protected $parsedData;
 		
-	protected $keywords = Array("money", "prince", "love", "nigeria");
+	protected $keywords = Array();
 	
 	protected $keywordsContained = Array();
 	
-	function __constructor(){  // Constructor
-		
+	function __constructor($keywordArr){  // Constructor
+		$this->keywords = $keywordArr;
 	}
 	
 	public function parseContent($s){
@@ -33,7 +33,7 @@ class SubjectThreat extends CalculateThreat{
 		
 		foreach($this->parsedData as $word){
 			if(in_array($word, $this->keywords) && !in_array($word, $this->keywordsContained)){
-				array_push($this->keywordsContained, $word);
+				array_push($this->keywordsContained, strtolower($word));
 			}
 		}
 		print_r($this->keywordsContained);
