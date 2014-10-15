@@ -1,5 +1,9 @@
 <?php
 
+require_once("BodyThreat.php");
+require_once("AddressThreat.php");
+require_once("SubjectThreat.php");
+
 class Analyzer {
 
 	protected $threshold;
@@ -28,7 +32,7 @@ class Analyzer {
 		
 	public function analyze($email, $threshold = 1) {
 
-		$this->threshold = 1;
+		$this->threshold = $threshold;
 
 		$bodyobject = new BodyThreat();
 

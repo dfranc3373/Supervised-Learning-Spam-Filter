@@ -32,7 +32,7 @@ class Analyzer {
 		
 	public function analyze($email, $threshold = 1) {
 
-		$this->threshold = 1;
+		$this->setThreshold($threshold);
 
 		$bodyobject = new BodyThreat();
 
