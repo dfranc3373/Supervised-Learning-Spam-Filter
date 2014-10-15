@@ -33,22 +33,33 @@ class Analyzer {
 		
 	public function analyze($email, $threshold = 1) {
 
-		//$mysql = new PDO($mysql_connect, 'root', '');
+		error_reporting(E_ALL);
+		ini_set('display_errors', '1');
 
 		global $mysql;
 
 		$this->setThreshold($threshold);
 
-		$sth = $mysql->prepare("SELECT `keyword` FROM `Keywords`");
+		$sth = $mysql->prepare("SELECT * FROM `Keywords`");
+
+		$sth->setFetchMode(PDO::FETCH_OBJ);
+
+		$sth->execute();
 
 		$keywords = $sth->fetchAll();
 
+		$sth_email = $mysql->prepare("INSERT INTO `Emails` (`ThresholdID`, `Body`, `Subject`, `EmailTo`, `EmailFrom`, `PercentageSpamFound`, `DateFound`, `DateReceived`) VALUES (:ThresholdID, :body, :subject, :emailTo, :emailFrom, :percentageSpamFound, :dateFound, :dateReceived)");
+
+		$date = date('Y-m-d H:i:s', time());
+
+		$sth_email->execute(array(':ThresholdID' => $this->threshold, ':body' => $email->body, ':subject' => $email->subject, ':emailTo' => "", ':emailFrom' => "", ':percentageSpamFound' => '0', ':dateFound' => $date, ':dateReceived' => $date));
+
 		//OBJECTS
-			$bodyobject = new BodyThreat($keywords);
+			$bodyobject = new BodyThreat($keywords, $id);
 
-			$subjectobject = new SubjectThreat($keywords);
+			$subjectobject = new SubjectThreat($keywords, $id);
 
-			$addressobject = new AddressThreat($keywords);
+			$addressobject = new AddressThreat($keywords, $id);
 
 		$subjectobject->parseContent($email->subject);
 

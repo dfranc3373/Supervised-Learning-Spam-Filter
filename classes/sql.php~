@@ -2,10 +2,6 @@
 
 $mysql = new PDO("mysql:host=localhost;dbname=Learning_Database", 'root', '');
 
-global $mysql_connect = "mysql:host=localhost;dbname=Learning_Database";
-
-$mysql_username = "Learning_Database";
-
-$mysql_password = "";
+echo $mysql;
 
 ?>
