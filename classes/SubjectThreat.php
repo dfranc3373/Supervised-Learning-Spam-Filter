@@ -30,18 +30,18 @@ class SubjectThreat extends CalculateThreat{
 	
 	public function parseContent($keywordArr, $emailID, $s){
 	
-		//print_r($keywordArr);
 		$this->keywords = $keywordArr;
-		//$this->emailID = $emailID;
-		$this->emailID = 1;
-		//print_r($this->keywords);
-		
+		$this->emailID = 1;		
 		$this->parsedData = explode(' ', $s);
 		
 		foreach($this->parsedData as $w) {
+			$w = str_replace(' ', '', $w); 		// Eliminate spaces
+			$w = strtolower($w);
+		}
 		
-			$w = str_replace(' ', '', $w);
-			
+		foreach($this->keywords as $kwObj){
+			$kwObj->Keyword = preg_replace('/\s+/', '', $kwObj->Keyword);	// Eliminate white spaces
+			$kwObj->Keyword = strtolower($kwObj->Keyword);
 		}
 		
 		$this->scanKeywords();
@@ -53,11 +53,11 @@ class SubjectThreat extends CalculateThreat{
 		
 		foreach($this->parsedData as $word){
 		
-			$holdID = $this->checkKeywordObject(strtolower($word));
+			$holdID = $this->checkKeywordObject($word);
 			
 			if($holdID != -1 && !in_array($word, $this->keywordsContained)){
-				echo $holdID;
-				array_push($this->keywordsContained, strtolower($word));
+				// echo $holdID;    // Debugging code
+				array_push($this->keywordsContained, $word);
 				$stmt = $mysql->prepare("INSERT INTO `KeywordCount` (Email_ID, Keyword_ID, Runtime) VALUES(:emailID, :keywordID, :runtime)");
 				$stmt->execute(array(':emailID' => $this->emailID, ':keywordID' => $holdID, ':runtime' => date('Y-m-d H:i:s', time())));
 			}
@@ -70,14 +70,12 @@ class SubjectThreat extends CalculateThreat{
 		
 		$keywordID = -1;
 		
-		$word = str_replace(' ', '', $word);
+		// $word = str_replace(' ', '', $word);
 		
 		foreach($this->keywords as $kwObj){
-			$k = preg_replace('/\s+/', '', $kwObj->Keyword);
-			
-			//echo $k . " and " . $word . " : " . strlen($k) . " = " . strlen($word) . " -------";
-			
-			if(strcmp((string)$k, (string)$word) == 0){
+			//$kWord = preg_replace('/\s+/', '', $kwObj->Keyword);  // Eliminate white spaces
+			//echo $k . " and " . $word . " : " . strlen($k) . " = " . strlen($word) . " -------";  // Debugging code
+			if(strcmp((string)$kWord, (string)$word) == 0){
 				$keywordID = $kwObj->Keyword_ID;
 				return $keywordID;
 			}
