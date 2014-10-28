@@ -75,7 +75,7 @@ class SubjectThreat extends CalculateThreat{
 		foreach($this->keywords as $kwObj){
 			//$kWord = preg_replace('/\s+/', '', $kwObj->Keyword);  // Eliminate white spaces
 			//echo $k . " and " . $word . " : " . strlen($k) . " = " . strlen($word) . " -------";  // Debugging code
-			if(strcmp((string)$kWord, (string)$word) == 0){
+			if(strcmp((string)$kwObj->Keyword, (string)$word) == 0){
 				$keywordID = $kwObj->Keyword_ID;
 				return $keywordID;
 			}
