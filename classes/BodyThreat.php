@@ -9,12 +9,18 @@ class BodyThreat extends CalculateThreat{
 	protected $threshold;
 	
 	protected $spamPercent;
+    
+    protected $hamPercent;
 	
 	protected $keywordPercent;
 
 	protected $similarityPercent;
 
 	protected $parsedData;
+    
+    protected $sCount;
+    
+    protected $nsCount;
 
     protected $linkPercent;
     
@@ -105,5 +111,23 @@ class BodyThreat extends CalculateThreat{
 		
 	}
     
+    public function checkThreat($keywordArray){
+        $sCount = 0;
+        $nsCount = 0;
+        $hamPercent= 0;
+        $spamPercent = 0;
+        
+        foreach($this->keywords as $kwObj){
+            $sCount += $kwObj->sCount;
+            $nsCount += $kwObj->nsCount;
+        }
+        
+        foreach($this->keywords as $kwObj){
+            if(in_array($this->foundKw, $kwObj->Keyword)){
+                $spamPercent += log(($kwObj->sCount/$sCount));
+                $hamPercent += log(($kwObj->nsCount/$nsCount));
+            }
+        }
+    }
 }
 ?>
