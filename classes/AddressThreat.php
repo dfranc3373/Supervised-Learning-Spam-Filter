@@ -61,7 +61,7 @@ class addressThreat extends CalculateThreat{
 			if($holdID != -1 && !in_array($word, $this->keywordsContained)){
 				array_push($this->keywordsContained, $word);
 				
-				$stmt = $mysql->prepare("SELECT 'Keyword' FROM `KeywordCount` WHERE 'Keyword_ID' = :keywordID");
+				$stmt = $mysql->prepare("SELECT `Keyword` FROM `KeywordCount` WHERE `Keyword_ID` = :keywordID");
 				$stmt->execute(array(':keywordID' => $holdID));
 				$result = $stmt->fetchAll;
 				if($result != null){

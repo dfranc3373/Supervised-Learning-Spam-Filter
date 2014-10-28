@@ -47,7 +47,18 @@ class Analyzer {
 		$sth->execute();
 
 		$keywords = $sth->fetchAll();
-
+		
+		foreach($keywords as $kw){
+		
+			$stmt = "SELECT COUNT(KeywordCount.Keyword_ID) AS `WordCount`FROM `KeywordCount` LEFT JOIN `Emails` ON (Emails.Email_ID = KeywordCount.Email_ID) WHERE `Keyword_ID` = `" . $kw->Keyword_ID . "` AND Emails.SpamFlag = 1";
+			$kw->sCount = $stmt->WordCount;
+			
+			$stmt = "SELECT COUNT(KeywordCount.Keyword_ID) AS `WordCount`FROM `KeywordCount` LEFT JOIN `Emails` ON (Emails.Email_ID = KeywordCount.Email_ID) WHERE `Keyword_ID` = `" . $kw->Keyword_ID . "` AND Emails.SpamFlag = 0";
+			$kw->nsCount = $stmt->WordCount;
+		}
+		
+		
+		
 		$sth_email = $mysql->prepare("INSERT INTO `Emails` (`ThresholdID`, `Body`, `Subject`, `EmailTo`, `EmailFrom`, `PercentageSpamFound`, `DateFound`, `DateReceived`) VALUES (:ThresholdID, :body, :subject, :emailTo, :emailFrom, :percentageSpamFound, :dateFound, :dateReceived)");
 
 		$date = date('Y-m-d H:i:s', time());
