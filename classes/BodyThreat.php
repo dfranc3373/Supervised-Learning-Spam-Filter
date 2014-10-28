@@ -112,22 +112,38 @@ class BodyThreat extends CalculateThreat{
 	}
     
     public function checkThreat($keywordArray){
-        $sCount = 0;
-        $nsCount = 0;
-        $hamPercent= 0;
-        $spamPercent = 0;
+        $this->$sCount = 0;
+        $this->$nsCount = 0;
+        $this->$hamPercent= 0;
+        $this->$spamPercent = 0;
         
         foreach($this->keywords as $kwObj){
-            $sCount += $kwObj->sCount;
-            $nsCount += $kwObj->nsCount;
+            $this->$sCount += $kwObj->sCount;
+            $this->$nsCount += $kwObj->nsCount;
         }
         
         foreach($this->keywords as $kwObj){
             if(in_array($this->foundKw, $kwObj->Keyword)){
-                $spamPercent += log(($kwObj->sCount/$sCount));
-                $hamPercent += log(($kwObj->nsCount/$nsCount));
+                $this->$spamPercent += log(($kwObj->sCount/$sCount));
+                $this->$hamPercent += log(($kwObj->nsCount/$nsCount));
             }
         }
+    }
+    
+    public function getSpamCount(){
+        return $this->sCount;
+    }
+    
+    public function getHamCount(){
+        return $this->nsCount;
+    }
+    
+    public function getSpamPercent(){
+        return $this->spamPercent;
+    }
+    
+    public function getHamPercent(){
+        return $this->hamPercent;
     }
 }
 ?>
