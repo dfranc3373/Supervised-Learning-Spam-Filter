@@ -50,11 +50,17 @@ class Analyzer {
 		
 		foreach($keywords as $kw){
 		
-			$stmt = "SELECT COUNT(KeywordCount.Keyword_ID) AS `WordCount`FROM `KeywordCount` LEFT JOIN `Emails` ON (Emails.Email_ID = KeywordCount.Email_ID) WHERE `Keyword_ID` = `" . $kw->Keyword_ID . "` AND Emails.SpamFlag = 1";
-			$kw->sCount = $stmt->WordCount;
+			$stmt = $mysql->prepare("SELECT COUNT(KeywordCount.Keyword_ID) AS `WordCount` FROM `KeywordCount` LEFT JOIN `Emails` ON (Emails.Email_ID = KeywordCount.Email_ID) WHERE `Keyword_ID` = :kwID AND Emails.SpamFlag = 1");
+			$stmt->setFetchMode(PDO::FETCH_OBJ);
+			$stmt->execute(array(':kwID' => $kw->Keyword_ID));
+			$result = $stmt->fetch();
+			$kw->sCount = $result->WordCount;
 			
-			$stmt = "SELECT COUNT(KeywordCount.Keyword_ID) AS `WordCount`FROM `KeywordCount` LEFT JOIN `Emails` ON (Emails.Email_ID = KeywordCount.Email_ID) WHERE `Keyword_ID` = `" . $kw->Keyword_ID . "` AND Emails.SpamFlag = 0";
-			$kw->nsCount = $stmt->WordCount;
+			$stmt = $mysql->prepare("SELECT COUNT(KeywordCount.Keyword_ID) AS `WordCount` FROM `KeywordCount` LEFT JOIN `Emails` ON (Emails.Email_ID = KeywordCount.Email_ID) WHERE `Keyword_ID` = :kwID AND Emails.SpamFlag = 0");
+			$stmt->setFetchMode(PDO::FETCH_OBJ);
+			$stmt->execute(array(':kwID' => $kw->Keyword_ID));
+			$result = $stmt->fetch();
+			$kw->nsCount = $result->WordCount;
 		}
 		
 		
@@ -63,22 +69,30 @@ class Analyzer {
 
 		$date = date('Y-m-d H:i:s', time());
 
-		$sth_email->execute(array(':ThresholdID' => $this->threshold, ':body' => $email->body, ':subject' => $email->subject, ':emailTo' => "", ':emailFrom' => "", ':percentageSpamFound' => '0', ':dateFound' => $date, ':dateReceived' => $date));
+		$sth_email->execute(array(':ThresholdID' => $this->threshold, ':body' => $email->body, ':subject' => $email->subject, ':emailTo' => "", ':emailFrom' => $email->address, ':percentageSpamFound' => '0', ':dateFound' => $date, ':dateReceived' => $date));
 		
 		$new = $keywords;
-				
+		
+		$id = $mysql->lastInsertId();
+		
 		//OBJECTS
-			//$bodyobject = new BodyThreat($keywords, 1);
+		$bodyobject = new BodyThreat($keywords, $id);
 
-			$subjectobject = new SubjectThreat();
+		$subjectobject = new SubjectThreat($keywords, $id);
 
-			//$addressobject = new AddressThreat($keywords, 1);
+		$addressobject = new AddressThreat($keywords, $id);
 
-		$subjectobject->parseContent($new, 1, $email->subject);
+		$subjectobject->parseContent($new, $id, $email->subject);
 
-		//$addressobject->parseContent($email->address);
+		$addressobject->parseContent($new, $id, $email->address);
 
-		//$bodyobject->parseContent($email->body);
+		$bodyobject->parseContent($new, $id, $email->body);
+		
+		
+		
+		$bodyobject->checkThreat();
+		
+		
 
 		return 1;
 

@@ -1,5 +1,5 @@
 <?php
 
-$mysql = new PDO("mysql:host=localhost;dbname=Learning_Database", 'root', '');
+$mysql = new PDO("mysql:host=54.200.251.163;dbname=Learning_Database", 'root', '');
 
 ?>
