@@ -38,7 +38,7 @@ class addressThreat extends CalculateThreat{
 		
 		$holdArr = explode('.', $afterAT);
 		
-		foreach($holdArr as $word){ //runs in n time
+		foreach($holdArr as $word){
 			$word = str_replace(' ', '', $word);	// Eliminate spaces
 			array_push($this->parsedData, strtolower($word));
 		}
