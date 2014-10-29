@@ -34,7 +34,7 @@ class SubjectThreat extends CalculateThreat{
 		$this->emailID = 1;		
 		$this->parsedData = explode(' ', $s);
 		
-		foreach($this->parsedData as $w) {
+		/*foreach($this->parsedData as $w) {
 			$w = str_replace(' ', '', $w); 		// Eliminate spaces
 			$w = strtolower($w);
 		}
@@ -43,7 +43,7 @@ class SubjectThreat extends CalculateThreat{
 			$kwObj->Keyword = preg_replace('/\s+/', '', $kwObj->Keyword);	// Eliminate white spaces
 			$kwObj->Keyword = strtolower($kwObj->Keyword);
 			//echo "Subject kw: " . $kwObj->Keyword;
-		}
+		} */
 		
 		$this->scanKeywords();
 	}
@@ -83,6 +83,11 @@ class SubjectThreat extends CalculateThreat{
 		foreach($this->keywords as $kwObj){
 			//$kWord = preg_replace('/\s+/', '', $kwObj->Keyword);  // Eliminate white spaces
 			//echo $k . " and " . $word . " : " . strlen($k) . " = " . strlen($word) . " -------";  // Debugging code
+			$word = str_replace(' ', '', $word); 		// Eliminate spaces
+			$word = strtolower($word);
+			$kwObj->Keyword = preg_replace('/\s+/', '', $kwObj->Keyword);	// Eliminate white spaces
+			$kwObj->Keyword = strtolower($kwObj->Keyword);
+			
 			if(strcmp((string)$kwObj->Keyword, (string)$word) == 0){
 				$keywordID = $kwObj->Keyword_ID;
 				return $keywordID;

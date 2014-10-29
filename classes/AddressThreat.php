@@ -37,8 +37,8 @@ class addressThreat extends CalculateThreat{
 		array_push($this->parsedData, $beforeAT);
 		
 		$holdArr = explode('.', $afterAT);
-		
-		foreach($holdArr as $word){ //runs in n time
+
+		/*foreach($holdArr as $word){
 			$word = str_replace(' ', '', $word);	// Eliminate spaces
 			array_push($this->parsedData, strtolower($word));
 		}
@@ -46,8 +46,8 @@ class addressThreat extends CalculateThreat{
 		foreach($this->keywords as $kwObj){
 			$kwObj->Keyword = preg_replace('/\s+/', '', $kwObj->Keyword);	// Eliminate white spaces
 			$kwObj->Keyword = strtolower($kwObj->Keyword);
-			//echo "Address kw: " . $kwObj->Keyword . ";
-		}
+			//echo "Address kw: " . $kwObj->Keyword;
+		} */
 				
 		$this->scanKeywords();
 	}
@@ -86,6 +86,11 @@ class addressThreat extends CalculateThreat{
 		foreach($this->keywords as $kwObj){
 			//$kWord = preg_replace('/\s+/', '', $kwObj->Keyword);  // Eliminate white spaces
 			//echo $k . " and " . $word . " : " . strlen($k) . " = " . strlen($word) . " -------";  // Debugging code
+			$word = str_replace(' ', '', $word); 		// Eliminate spaces
+			$word = strtolower($word);
+			$kwObj->Keyword = preg_replace('/\s+/', '', $kwObj->Keyword);	// Eliminate white spaces
+			$kwObj->Keyword = strtolower($kwObj->Keyword);
+			
 			if(strcmp((string)$kwObj->Keyword, (string)$word) == 0){
 				$keywordID = $kwObj->Keyword_ID;
 				return $keywordID;
