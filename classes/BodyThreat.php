@@ -147,13 +147,9 @@ class BodyThreat extends CalculateThreat{
         
         foreach($this->keywords as $kwObj){
             if(in_array($kwObj->Keyword, $this->foundKw)){
-            	if($this->sCount != 0){
-                	$this->spamPercent += log(($kwObj->sCount/$this->sCount));
-                }
-                if($this->nsCount != 0){
-                    echo $kwObj->Keyword . " has occured " . $kwObj->nsCount . nl2br(" times\n");
-                	$this->hamPercent += log(($kwObj->nsCount/$this->nsCount));
-                }
+                $this->spamPercent += log(($kwObj->sCount+1)/(210+$this->sCount));
+                //echo $kwObj->Keyword . " has occured " . $kwObj->nsCount . nl2br(" times\n");
+                $this->hamPercent += log(($kwObj->nsCount+1)/(210+$this->nsCount));
             }
         }
         
