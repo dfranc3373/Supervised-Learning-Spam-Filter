@@ -40,32 +40,61 @@ class Analyzer {
 
 		$this->setThreshold($threshold);
 
-		$sth = $mysql->prepare("SELECT * FROM `Keywords`");
+		$sth = $mysql->prepare("SELECT DISTINCT Keywords.*, (SELECT COUNT(*) FROM `KeywordCount` WHERE KeywordCount.Keyword_ID = Keywords.Keyword_ID AND Emails.SpamFlag = 0) AS nsCount, (SELECT COUNT(*) FROM `KeywordCount` WHERE KeywordCount.Keyword_ID = Keywords.Keyword_ID AND Emails.SpamFlag = 1) AS sCount FROM `Keywords` LEFT JOIN `KeywordCount` on KeywordCount.Keyword_ID = Keywords.Keyword_ID LEFT JOIN `Emails` ON Emails.Email_ID = KeywordCount.Email_ID");
+
+		//$sth = $mysql->prepare("SELECT *,  COUNT(KeywordCount.Keyword_ID) AS `WordCount` FROM `Keywords`");
 
 		$sth->setFetchMode(PDO::FETCH_OBJ);
 
 		$sth->execute();
 
 		$keywords = $sth->fetchAll();
-
+		
+		/*foreach($keywords as $kw){
+		
+			$stmt = $mysql->prepare("SELECT COUNT(KeywordCount.Keyword_ID) AS `WordCount` FROM `KeywordCount` LEFT JOIN `Emails` ON (Emails.Email_ID = KeywordCount.Email_ID) WHERE `Keyword_ID` = :kwID AND Emails.SpamFlag = 1");
+			$stmt->setFetchMode(PDO::FETCH_OBJ);
+			$stmt->execute(array(':kwID' => $kw->Keyword_ID));
+			$result = $stmt->fetch();
+			$kw->sCount = $result->WordCount;
+			
+			$stmt = $mysql->prepare("SELECT COUNT(KeywordCount.Keyword_ID) AS `WordCount` FROM `KeywordCount` LEFT JOIN `Emails` ON (Emails.Email_ID = KeywordCount.Email_ID) WHERE `Keyword_ID` = :kwID AND Emails.SpamFlag = 0");
+			$stmt->setFetchMode(PDO::FETCH_OBJ);
+			$stmt->execute(array(':kwID' => $kw->Keyword_ID));
+			$result = $stmt->fetch();
+			$kw->nsCount = $result->WordCount;
+		}*/
+		
+		
+		
 		$sth_email = $mysql->prepare("INSERT INTO `Emails` (`ThresholdID`, `Body`, `Subject`, `EmailTo`, `EmailFrom`, `PercentageSpamFound`, `DateFound`, `DateReceived`) VALUES (:ThresholdID, :body, :subject, :emailTo, :emailFrom, :percentageSpamFound, :dateFound, :dateReceived)");
 
 		$date = date('Y-m-d H:i:s', time());
 
-		$sth_email->execute(array(':ThresholdID' => $this->threshold, ':body' => $email->body, ':subject' => $email->subject, ':emailTo' => "", ':emailFrom' => "", ':percentageSpamFound' => '0', ':dateFound' => $date, ':dateReceived' => $date));
-
+		$sth_email->execute(array(':ThresholdID' => $this->threshold, ':body' => $email->body, ':subject' => $email->subject, ':emailTo' => "", ':emailFrom' => $email->address, ':percentageSpamFound' => '0', ':dateFound' => $date, ':dateReceived' => $date));
+		
+		$new = $keywords;
+		
+		$id = $mysql->lastInsertId();
+		
 		//OBJECTS
-			$bodyobject = new BodyThreat($keywords, $id);
+		$bodyobject = new BodyThreat($keywords, $id);
 
-			$subjectobject = new SubjectThreat($keywords, $id);
+		$subjectobject = new SubjectThreat($keywords, $id);
 
-			$addressobject = new AddressThreat($keywords, $id);
+		$addressobject = new AddressThreat($keywords, $id);
 
-		$subjectobject->parseContent($email->subject);
+		$subjectobject->parseContent($new, $id, $email->subject);
 
-		$addressobject->parseContent($email->address);
+		$addressobject->parseContent($new, $id, $email->address);
 
-		$bodyobject->parseContent($email->body);
+		$bodyobject->parseContent($new, $id, $email->body);
+		
+		
+		
+		$bodyobject->checkThreat();
+		
+		
 
 		return 1;
 

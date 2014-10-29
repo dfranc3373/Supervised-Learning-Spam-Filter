@@ -40,7 +40,9 @@ class Analyzer {
 
 		$this->setThreshold($threshold);
 
-		$sth = $mysql->prepare("SELECT * FROM `Keywords`");
+		$sth = $mysql->prepare("SELECT DISTINCT Keywords.*, (SELECT COUNT(*) FROM `KeywordCount` WHERE KeywordCount.Keyword_ID = Keywords.Keyword_ID AND Emails.SpamFlag = 0) AS nsCount, (SELECT COUNT(*) FROM `KeywordCount` WHERE KeywordCount.Keyword_ID = Keywords.Keyword_ID AND Emails.SpamFlag = 1) AS sCount FROM `Keywords` LEFT JOIN `KeywordCount` on KeywordCount.Keyword_ID = Keywords.Keyword_ID LEFT JOIN `Emails` ON Emails.Email_ID = KeywordCount.Email_ID");
+
+		//$sth = $mysql->prepare("SELECT *,  COUNT(KeywordCount.Keyword_ID) AS `WordCount` FROM `Keywords`");
 
 		$sth->setFetchMode(PDO::FETCH_OBJ);
 
@@ -48,7 +50,7 @@ class Analyzer {
 
 		$keywords = $sth->fetchAll();
 		
-		foreach($keywords as $kw){
+		/*foreach($keywords as $kw){
 		
 			$stmt = $mysql->prepare("SELECT COUNT(KeywordCount.Keyword_ID) AS `WordCount` FROM `KeywordCount` LEFT JOIN `Emails` ON (Emails.Email_ID = KeywordCount.Email_ID) WHERE `Keyword_ID` = :kwID AND Emails.SpamFlag = 1");
 			$stmt->setFetchMode(PDO::FETCH_OBJ);
@@ -61,7 +63,7 @@ class Analyzer {
 			$stmt->execute(array(':kwID' => $kw->Keyword_ID));
 			$result = $stmt->fetch();
 			$kw->nsCount = $result->WordCount;
-		}
+		}*/
 		
 		
 		
