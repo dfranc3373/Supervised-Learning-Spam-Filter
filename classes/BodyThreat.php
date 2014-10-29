@@ -51,7 +51,7 @@ class BodyThreat extends CalculateThreat{
         foreach($this->keywords as $kwObj){
         	$kwObj->Keyword = preg_replace('/\s+/', '', $kwObj->Keyword);	// Eliminate white spaces
         	$kwObj->Keyword = strtolower($kwObj->Keyword);
-        	echo "Body kw: " . $kwObj->Keyword;
+        	//echo "Body kw: " . $kwObj->Keyword;
         }
         
         $this->scanKeywords();
@@ -72,14 +72,14 @@ class BodyThreat extends CalculateThreat{
             if($holdID != -1 && !in_array($word, $this->foundKw)){
                 array_push($this->foundKw, $word);
                 
-                $stmt = $mysql->prepare("SELECT `Keyword` FROM `KeywordCount` WHERE `Keyword_ID` = :keywordID");
-				$stmt->execute(array(':keywordID' => $holdID));
-				$result = $stmt->fetchAll();
-				if($result != null){
+                //$stmt = $mysql->prepare("SELECT `Keyword` FROM `KeywordCount` WHERE `Keyword_ID` = :keywordID");
+				//$stmt->execute(array(':keywordID' => $holdID));
+				//$result = $stmt->fetchAll();
+				//if($result != null){
 					$stmt = $mysql->prepare("INSERT INTO `KeywordCount` (Email_ID, Keyword_ID, Runtime) VALUES(:emailID, :keywordID, :runtime)");
 					$stmt->execute(array(':emailID' => $this->emailID, ':keywordID' => $holdID, ':runtime' => date('Y-m-d H:i:s', time())));
-				}
-				echo "Body ID: " . $holdID;
+				//}
+				//echo "Body ID: " . $holdID;
             }
 
         }
@@ -141,10 +141,10 @@ class BodyThreat extends CalculateThreat{
                 }
             }
         }
-        echo "Body scount: " . $this->sCount;
-        echo "Body nscount: " . $this->nsCount;
-        echo "Body hamP: " . $this->hamPercent;
-        echo "Body spamP: " . $this->spamPercent;
+        //echo "Body scount: " . $this->sCount;
+        //echo "Body nscount: " . $this->nsCount;
+        //echo "Body hamP: " . $this->hamPercent;
+        //echo "Body spamP: " . $this->spamPercent;
     }
     
     public function getSpamCount(){

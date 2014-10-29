@@ -46,9 +46,7 @@ class addressThreat extends CalculateThreat{
 		foreach($this->keywords as $kwObj){
 			$kwObj->Keyword = preg_replace('/\s+/', '', $kwObj->Keyword);	// Eliminate white spaces
 			$kwObj->Keyword = strtolower($kwObj->Keyword);
-			echo "Address kw: " . $kwObj->Keyword . "
-        
-        ";
+			//echo "Address kw: " . $kwObj->Keyword . ";
 		}
 				
 		$this->scanKeywords();
@@ -65,18 +63,18 @@ class addressThreat extends CalculateThreat{
 			if($holdID != -1 && !in_array($word, $this->keywordsContained)){
 				array_push($this->keywordsContained, $word);
 				
-				$stmt = $mysql->prepare("SELECT `Keyword` FROM `KeywordCount` WHERE `Keyword_ID` = :keywordID");
-				$stmt->execute(array(':keywordID' => $holdID));
-				$result = $stmt->fetchAll();
-				if($result != null){
+				//$stmt = $mysql->prepare("SELECT `Keyword` FROM `KeywordCount` WHERE `Keyword_ID` = :keywordID");
+				//$stmt->execute(array(':keywordID' => $holdID));
+				//$result = $stmt->fetchAll();
+				//if($result != null){
 					$stmt = $mysql->prepare("INSERT INTO `KeywordCount` (Email_ID, Keyword_ID, Runtime) VALUES(:emailID, :keywordID, :runtime)");
 					$stmt->execute(array(':emailID' => $this->emailID, ':keywordID' => $holdID, ':runtime' => date('Y-m-d H:i:s', time())));
-				}
-				echo "Address ID: " . $holdID;
+				//}
+				//echo "Address ID: " . $holdID;
 			}
 		}
 		
-		print_r($this->keywordsContained);
+		//print_r($this->keywordsContained);
 	}
 	
 	public function checkKeywordObject($word){
@@ -118,10 +116,10 @@ class addressThreat extends CalculateThreat{
             }
         }
         
-        echo "Body scount: " . $this->sCount;
-        echo "Body nscount: " . $this->nsCount;
-        echo "Address hamP: " . $this->hamPercent;
-        echo "Adress spamP: " . $this->spamPercent;
+        //echo "Body scount: " . $this->sCount;
+        //echo "Body nscount: " . $this->nsCount;
+        //echo "Address hamP: " . $this->hamPercent;
+        //echo "Adress spamP: " . $this->spamPercent;
     }
     
     public function getSpamCount(){
