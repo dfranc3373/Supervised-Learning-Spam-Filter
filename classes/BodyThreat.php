@@ -169,10 +169,10 @@ class BodyThreat extends CalculateThreat{
         
         foreach($this->keywords as $kwObj){
             if(in_array($kwObj->Keyword, $this->foundKw)){
-                return true;
+                return 0;
             }
         }
-        return false;
+        return 1;
     }
     
     public function getSpamCount(){
