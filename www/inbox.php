@@ -37,8 +37,15 @@ if($page == "inbox") {
 ?>
 
 <div class="list-group">
-				 <a href="#" class="list-group-item active"><?php echo strtoupper($page); ?></a>
-				
+				 <a class="list-group-item active"><?php echo strtoupper($page); ?>
+<?php if($page == "inbox") { ?>
+
+	<button type="button" class="btn btn-warning btn-sm" style="float: right;">Spam</button>
+
+<?php } ?>
+
+</a>
+			
 <?php
 
 if($count == 0) {
@@ -90,11 +97,7 @@ echo $email->Subject;
 
 <span class="badge" style="float: left;"><?php echo $email->Email_ID; ?></span>
 
-<?php if($page == "inbox") { ?>
-
-	<button type="button" class="btn btn-warning btn-sm" style="float: right;">Spam</button>
-
-<?php } ?>
+<input type="checkbox" style="float: right;">
 
 				</div>
 

@@ -4,7 +4,7 @@ require_once("sql.php");
 
 require_once("CalculateThreat.php");
 
-class SubjectThreat extends CalculateThreat{
+class addressThreat extends CalculateThreat{
 
 	protected $threshold;
 	
@@ -14,50 +14,57 @@ class SubjectThreat extends CalculateThreat{
 
 	protected $similarityPercent;
 
-	protected $parsedData;
-		
 	protected $keywords = Array();
+
+	protected $parsedData = Array();
 	
 	protected $keywordsContained = Array();
 	
 	protected $emailID;
 	
-
-	function __constructor($keywordArr, $emailID) {  // Constructor
-		
-		
+	function __constructor($keywordArr){  // Constructor
+		$this->keywords = $keywordArr;
 	}
 	
 	public function parseContent($keywordArr, $emailID, $s){
 	
 		$this->keywords = $keywordArr;
-		$this->emailID = 1;		
-		$this->parsedData = explode(' ', $s);
+		$this->emailID = 1;
+	
+		$beforeAT = substr($s, 0, strpos($s, '@'));
+		$afterAT = substr($s, strpos($s, '@') + 1);
 		
-		/*foreach($this->parsedData as $w) {
-			$w = str_replace(' ', '', $w); 		// Eliminate spaces
-			$w = strtolower($w);
+		array_push($this->parsedData, $beforeAT);
+		
+		$holdArr = explode('.', $afterAT);
+		
+<<<<<<< HEAD
+		foreach($holdArr as $word){ //runs in n time
+=======
+		/*foreach($holdArr as $word){
+>>>>>>> 366e09a645a6b531f66cc494acf6fbeaa00a01c5
+			$word = str_replace(' ', '', $word);	// Eliminate spaces
+			array_push($this->parsedData, strtolower($word));
 		}
 		
 		foreach($this->keywords as $kwObj){
 			$kwObj->Keyword = preg_replace('/\s+/', '', $kwObj->Keyword);	// Eliminate white spaces
 			$kwObj->Keyword = strtolower($kwObj->Keyword);
-			//echo "Subject kw: " . $kwObj->Keyword;
+			//echo "Address kw: " . $kwObj->Keyword;
 		} */
-		
+				
 		$this->scanKeywords();
 	}
 	
 	public function scanKeywords(){
-		
+	
 		global $mysql;
-		
+	
 		foreach($this->parsedData as $word){
-		
+			
 			$holdID = $this->checkKeywordObject($word);
 			
 			if($holdID != -1 && !in_array($word, $this->keywordsContained)){
-				// echo $holdID;    // Debugging code
 				array_push($this->keywordsContained, $word);
 				
 				//$stmt = $mysql->prepare("SELECT `Keyword` FROM `KeywordCount` WHERE `Keyword_ID` = :keywordID");
@@ -67,11 +74,11 @@ class SubjectThreat extends CalculateThreat{
 					$stmt = $mysql->prepare("INSERT INTO `KeywordCount` (Email_ID, Keyword_ID, Runtime) VALUES(:emailID, :keywordID, :runtime)");
 					$stmt->execute(array(':emailID' => $this->emailID, ':keywordID' => $holdID, ':runtime' => date('Y-m-d H:i:s', time())));
 				//}
-				//echo "Subject ID: " . $holdID;
+				//echo "Address ID: " . $holdID;
 			}
 		}
+		
 		//print_r($this->keywordsContained);
-	
 	}
 	
 	public function checkKeywordObject($word){
@@ -117,10 +124,11 @@ class SubjectThreat extends CalculateThreat{
                 }
             }
         }
+        
         //echo "Body scount: " . $this->sCount;
         //echo "Body nscount: " . $this->nsCount;
-        //echo "Subject hamP: " . $this->hamPercent;
-        //echo "Subject spamP: " . $this->spamPercent;
+        //echo "Address hamP: " . $this->hamPercent;
+        //echo "Adress spamP: " . $this->spamPercent;
     }
     
     public function getSpamCount(){
@@ -139,11 +147,11 @@ class SubjectThreat extends CalculateThreat{
         return $this->hamPercent;
     }
 	
-	
 	public function checkSimilarity() {
 	
 		//made in new object class
 		
 	}
 }
+
 ?>
