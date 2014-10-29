@@ -6,9 +6,9 @@ ini_set('display_errors', '1');
 require_once("../classes/Email.php");
 require_once("../classes/Analyzer.php");
 
-	$e = new Email();
-
 	$analyzer = new Analyzer();
+
+	$e = new Email();
 
 	$e->address = "prince@ttu.edu";
 
