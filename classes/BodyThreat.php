@@ -165,7 +165,14 @@ class BodyThreat extends CalculateThreat{
         echo "Overall threat: " . ($this->hamPercent - $this->spamPercent);
         */
         
-        return ($this->hamPercent - $this->spamPercent);
+        //return ($this->hamPercent - $this->spamPercent);
+        
+        foreach($this->keywords as $kwObj){
+            if(in_array($kwObj->Keyword, $this->foundKw)){
+                return true;
+            }
+        }
+        return false;
     }
     
     public function getSpamCount(){

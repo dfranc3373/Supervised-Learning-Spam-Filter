@@ -10,11 +10,11 @@ require_once("../classes/Analyzer.php");
     
     $e = new Email();
 
-	$e->address = "soul@music.com";
+	$e->address = "rnb@music.com";
 
-	$e->subject = "test3";
+	$e->subject = "test4";
 
-	$e->body = "free nigerian";
+	$e->body = "prince xanax";
 
 	$analyzer->analyze($e);
     
