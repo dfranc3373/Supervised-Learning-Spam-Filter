@@ -152,17 +152,17 @@ class BodyThreat extends CalculateThreat{
                 $this->hamPercent += log(($kwObj->nsCount+1)/(210+$this->nsCount));
             }
         }
-        /*
+        
+        $this->spamPercent += log((210 + $this->sCount)/(420 + $this->sCount + $this->nsCount));
+        $this->hamPercent += log((210 + $this->nsCount)/(420 + $this->sCount + $this->nsCount));
+        
         echo "Body scount: " . $this->sCount . nl2br("\n"); 
         echo "Body nscount: " . $this->nsCount . nl2br("\n");
         echo "Body hamP: " . $this->hamPercent . nl2br("\n");
         echo "Body spamP: " . $this->spamPercent . nl2br("\n");
-        */
-        foreach($this->keywords as $kwObj){
-            if(in_array($kwObj->Keyword, $this->foundKw))
-                return true;
-        }
-        return false;
+        echo "Overall threat: " . ($this->hamPercent - $this->spamPercent);
+        
+        return ($this->hamPercent - $this->spamPercent);
     }
     
     public function getSpamCount(){

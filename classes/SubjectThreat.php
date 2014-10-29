@@ -123,9 +123,12 @@ class SubjectThreat extends CalculateThreat{
                 $this->spamPercent += log(($kwObj->sCount+1)/(210+$this->sCount));
                 //echo $kwObj->Keyword . " has occured " . $kwObj->nsCount . nl2br(" times\n");
                 $this->hamPercent += log(($kwObj->nsCount+1)/(210+$this->nsCount));
+                
             }
         }
         
+        $this->spamPercent += log((210 + $this->sCount)/(420 + $this->sCount + $this->nsCount));
+        $this->hamPercent += log((210 + $this->nsCount)/(420 + $this->sCount + $this->nsCount));
         /*
         echo "Body scount: " . $this->sCount . nl2br("\n"); 
         echo "Body nscount: " . $this->nsCount . nl2br("\n");
