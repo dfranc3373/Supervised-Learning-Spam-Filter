@@ -135,7 +135,7 @@ class BodyThreat extends CalculateThreat{
             $this->sCount += $kwObj->sCount;
             $this->nsCount += $kwObj->nsCount;
         }
-        
+        /*
         foreach($this->foundKw as $kw){
             echo "Keyword: " . $kw . nl2br("\n");
         }
@@ -144,7 +144,7 @@ class BodyThreat extends CalculateThreat{
             echo "Keyword: " . $kwObj->Keyword . " sCount: " . $kwObj->sCount . nl2br("\n");
             echo "Keyword: " . $kwObj->Keyword . " nsCount: " . $kwObj->nsCount . nl2br("\n");
         }
-        
+        */
         foreach($this->keywords as $kwObj){
             if(in_array($kwObj->Keyword, $this->foundKw)){
                 $this->spamPercent += log(($kwObj->sCount+1)/(210+$this->sCount));
@@ -152,12 +152,12 @@ class BodyThreat extends CalculateThreat{
                 $this->hamPercent += log(($kwObj->nsCount+1)/(210+$this->nsCount));
             }
         }
-        
+        /*
         echo "Body scount: " . $this->sCount . nl2br("\n"); 
         echo "Body nscount: " . $this->nsCount . nl2br("\n");
         echo "Body hamP: " . $this->hamPercent . nl2br("\n");
         echo "Body spamP: " . $this->spamPercent . nl2br("\n");
-        
+        */
         foreach($this->keywords as $kwObj){
             if(in_array($kwObj->Keyword, $this->foundKw))
                 return true;
