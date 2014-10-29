@@ -131,20 +131,36 @@ class BodyThreat extends CalculateThreat{
             $this->nsCount += $kwObj->nsCount;
         }
         
+        foreach($this->foundKw as $kw){
+            echo "Keyword: " . $kw . nl2br("\n");
+        }
+        
+        foreach($this->keywords as $kwObj){
+            echo "Keyword: " . $kwObj->Keyword . " sCount: " . $kwObj->sCount . nl2br("\n");
+            echo "Keyword: " . $kwObj->Keyword . " nsCount: " . $kwObj->nsCount . nl2br("\n");
+        }
+        
         foreach($this->keywords as $kwObj){
             if(in_array($kwObj->Keyword, $this->foundKw)){
             	if($this->sCount != 0){
                 	$this->spamPercent += log(($kwObj->sCount/$this->sCount));
                 }
                 if($this->nsCount != 0){
+                    echo $kwObj->Keyword . " has occured " . $kwObj->nsCount . nl2br(" times\n");
                 	$this->hamPercent += log(($kwObj->nsCount/$this->nsCount));
                 }
             }
         }
-        //echo "Body scount: " . $this->sCount;
-        //echo "Body nscount: " . $this->nsCount;
-        //echo "Body hamP: " . $this->hamPercent;
-        //echo "Body spamP: " . $this->spamPercent;
+        
+        echo "Body scount: " . $this->sCount . nl2br("\n"); 
+        echo "Body nscount: " . $this->nsCount . nl2br("\n");
+        echo "Body hamP: " . $this->hamPercent . nl2br("\n");
+        echo "Body spamP: " . $this->spamPercent . nl2br("\n");
+        
+        foreach($this->keywords as $kwObj){
+            if(in_array($kwObj->Keyword, $this->foundKw))
+                return true;
+        }
     }
     
     public function getSpamCount(){

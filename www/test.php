@@ -8,6 +8,17 @@ require_once("../classes/Analyzer.php");
 
 	$analyzer = new Analyzer();
     
+    $e = new Email();
+
+	$e->address = "soul@music.com";
+
+	$e->subject = "test3";
+
+	$e->body = "free nigerian";
+
+	$analyzer->analyze($e);
+    
+/*    
 	$e = new Email();
 
 	$e->address = "funk@music.com";
@@ -17,7 +28,7 @@ require_once("../classes/Analyzer.php");
 	$e->body = "free";
 
 	$analyzer->analyze($e);
-/*
+    
     //------------------------------
     $e1 = new Email();
 
