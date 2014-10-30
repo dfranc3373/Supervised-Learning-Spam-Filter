@@ -53,11 +53,11 @@
 							 <a href="inbox.php?page=spam">Spam</a>
 						</li>
 					</ul>
-					<form class="navbar-form navbar-right" role="search">
+					<!--<form class="navbar-form navbar-right" role="search">
 						<div class="form-group">
 							<input class="form-control" type="text">
 						</div> <button type="submit" class="btn btn-default">Submit</button>
-					</form>
+					</form>-->
 				</div>
 				
 			</nav>
