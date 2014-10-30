@@ -107,20 +107,39 @@ class SubjectThreat extends CalculateThreat{
             $this->nsCount += $kwObj->nsCount;
         }
         
+        /*
+        foreach($this->foundKw as $kw){
+            echo "Keyword: " . $kw . nl2br("\n");
+        }
+        
+        foreach($this->keywords as $kwObj){
+            echo "Keyword: " . $kwObj->Keyword . " sCount: " . $kwObj->sCount . nl2br("\n");
+            echo "Keyword: " . $kwObj->Keyword . " nsCount: " . $kwObj->nsCount . nl2br("\n");
+        }
+        */
+        
         foreach($this->keywords as $kwObj){
             if(in_array($kwObj->Keyword, $this->foundKw)){
-            	if($this->sCount != 0){
-                	$this->spamPercent += log(($kwObj->sCount/$this->sCount));
-                }
-                if($this->nsCount != 0){
-                	$this->hamPercent += log(($kwObj->nsCount/$this->nsCount));
-                }
+                $this->spamPercent += log(($kwObj->sCount+1)/(210+$this->sCount));
+                //echo $kwObj->Keyword . " has occured " . $kwObj->nsCount . nl2br(" times\n");
+                $this->hamPercent += log(($kwObj->nsCount+1)/(210+$this->nsCount));
+                
             }
         }
-        //echo "Body scount: " . $this->sCount;
-        //echo "Body nscount: " . $this->nsCount;
-        //echo "Subject hamP: " . $this->hamPercent;
-        //echo "Subject spamP: " . $this->spamPercent;
+        
+        $this->spamPercent += log((210 + $this->sCount)/(420 + $this->sCount + $this->nsCount));
+        $this->hamPercent += log((210 + $this->nsCount)/(420 + $this->sCount + $this->nsCount));
+        /*
+        echo "Body scount: " . $this->sCount . nl2br("\n"); 
+        echo "Body nscount: " . $this->nsCount . nl2br("\n");
+        echo "Body hamP: " . $this->hamPercent . nl2br("\n");
+        echo "Body spamP: " . $this->spamPercent . nl2br("\n");
+        */
+        foreach($this->keywords as $kwObj){
+            if(in_array($kwObj->Keyword, $this->foundKw))
+                return true;
+        }
+        return false;
     }
     
     public function getSpamCount(){
