@@ -89,12 +89,8 @@ class Analyzer {
 		$addressobject->parseContent($new, $id, $email->address);
 
 		$bodyobject->parseContent($new, $id, $email->body);
-		
-		
-		
+
 		$bodyobject->checkThreat();
-		
-		
 
 		return 1;
 
