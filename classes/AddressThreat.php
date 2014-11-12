@@ -10,6 +10,12 @@ class addressThreat extends CalculateThreat{
 	
 	protected $spamPercent;
 	
+    protected $hamPercent;
+    
+    protected $nsCount;
+    
+    protected $sCount;
+    
 	protected $keywordPercent;
 
 	protected $similarityPercent;
@@ -22,11 +28,14 @@ class addressThreat extends CalculateThreat{
 	
 	protected $emailID;
 	
-	function __constructor($keywordArr){  // Constructor
+	function __constructor($keywordArr, $emailID, $sCount, $nsCount){  // Constructor
 		$this->keywords = $keywordArr;
+        $this->emailID = $emailID;
+        $this->sCount = $sCount;
+        $this->nsCount = $nsCount;
 	}
 	
-	public function parseContent($keywordArr, $emailID, $s){
+	public function parseContent($keywordArr, $emailID, $s, $kwCount){
 	
 		$this->keywords = $keywordArr;
 		$this->emailID = 1;
@@ -50,6 +59,8 @@ class addressThreat extends CalculateThreat{
 		} */
 				
 		$this->scanKeywords();
+        
+        return checkThreat($kwCount);
 	}
 	
 	public function scanKeywords(){
@@ -99,32 +110,19 @@ class addressThreat extends CalculateThreat{
 		return $keywordID;
 	}
 	
-	public function checkThreat(){
-        $this->sCount = 0;
-        $this->nsCount = 0;
+	public function checkThreat($kwCount){
         $this->hamPercent= 0;
         $this->spamPercent = 0;
         
-        foreach($this->keywords as $kwObj){
-            $this->sCount += $kwObj->sCount;
-            $this->nsCount += $kwObj->nsCount;
-        }
-        
+        //calculate P(D|S) and P(D|H)
         foreach($this->keywords as $kwObj){
             if(in_array($kwObj->Keyword, $this->foundKw)){
-            	if($this->sCount != 0){
-                	$this->spamPercent += log(($kwObj->sCount/$this->sCount));
-                }
-                if($this->nsCount != 0){
-                	$this->hamPercent += log(($kwObj->nsCount/$this->nsCount));
-                }
+                $this->spamPercent += log(($kwObj->sCount+1)/($kwCount+$this->sCount));
+                $this->hamPercent += log(($kwObj->nsCount+1)/($kwCount+$this->nsCount));
             }
         }
         
-        //echo "Body scount: " . $this->sCount;
-        //echo "Body nscount: " . $this->nsCount;
-        //echo "Address hamP: " . $this->hamPercent;
-        //echo "Adress spamP: " . $this->spamPercent;
+        return ($this->hamPercent - $this->spamPercent);
     }
     
     public function getSpamCount(){

@@ -87,12 +87,13 @@ class Analyzer {
             $this->sCount += $kwObj->sCount;
             $this->nsCount += $kwObj->nsCount;
         }
-
 	$sql = "SELECT count(*) FROM `Keywords`"; 
 	$result = $con->prepare($sql); 
 	$result->execute(); 
 	$number_of_rows = $result->fetchColumn();
 
+        // Spam percentage of all emails in database
+        // NonSpam percentage of all emails in database
         $this->spamPercent += log(($number_of_rows + $this->sCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
         $this->hamPercent += log(($number_of_rows + $this->nsCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
 
@@ -108,7 +109,7 @@ $subject->start();
 
 $address->start();
 
-while($body->data == -100 || $subject->data == -100 || $address->data == -100) {
+while($body->data == null || $subject->data == null || $address->data == null) {
 
 	sleep(1);
 
@@ -123,7 +124,10 @@ while($body->data == -100 || $subject->data == -100 || $address->data == -100) {
 
 		$addressobject = new AddressThreat($keywords, $id, $this->sCount, $this->nsCount);
 
+		//pass the Keword Count to parseContent
+
 		$subjectobject->parseContent($new, $id, $email->subject, $number_of_rows);
+
 
 		$addressobject->parseContent($new, $id, $email->address, $number_of_rows);
 
@@ -137,7 +141,7 @@ while($body->data == -100 || $subject->data == -100 || $address->data == -100) {
 
 		}*/
 
-echo $spam;
+		echo $spam;
 
 		return 1;
 
@@ -156,7 +160,20 @@ echo $spam;
 	}
 
 	private function calcOverall($body, $subject, $address) {
-
+    /*
+    
+        $this->spamPercent += log(($number_of_rows + $this->sCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
+        $this->hamPercent += log(($number_of_rows + $this->nsCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
+        
+        $HSRatio = $this->hamPerent - $this->spamPercent;
+        
+        $threatLevel = $HSRation + $subjectobject->parseContent($new, $id, $email->subject) + $addressobject->parseContent($new, $id, $email->address) + $bodyobject->parseContent($new, $id, $email->body);
+        
+        if ($threatLevel < log(threshold))
+            spam
+        else
+            not spam
+     */
 	}
 
 }
@@ -169,7 +186,7 @@ class BodyThread extends Thread {
     public $nsCount;
     public $email;
     public $number_of_rows;
-    public $data = -100;
+    public $data = null;
      
     public function __construct($k, $i, $s, $ns, $e, $n) {
         $this->keywords = $k;
@@ -197,7 +214,7 @@ class AddressThread extends Thread {
     public $nsCount;
     public $email;
     public $number_of_rows;
-    public $data = -100;
+    public $data = null;
      
     public function __construct($k, $i, $s, $ns, $e, $n) {
         $this->keywords = $k;
@@ -225,7 +242,7 @@ class SubjectThread extends Thread {
     public $nsCount;
     public $email;
     public $number_of_rows;
-    public $data = -100;
+    public $data = null;
      
     public function __construct($k, $i, $s, $ns, $e, $n) {
         $this->keywords = $k;
