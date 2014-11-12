@@ -87,21 +87,15 @@ class Analyzer {
             $this->sCount += $kwObj->sCount;
             $this->nsCount += $kwObj->nsCount;
         }
-<<<<<<< HEAD
-        // Spam percentage of all emails in database
-        // NonSpam percentage of all emails in database
-        $this->spamPercent += log((210 + $this->sCount)/(420 + $this->sCount + $this->nsCount));
-        $this->hamPercent += log((210 + $this->nsCount)/(420 + $this->sCount + $this->nsCount));
-=======
-
 	$sql = "SELECT count(*) FROM `Keywords`"; 
 	$result = $con->prepare($sql); 
 	$result->execute(); 
 	$number_of_rows = $result->fetchColumn();
 
+        // Spam percentage of all emails in database
+        // NonSpam percentage of all emails in database
         $this->spamPercent += log(($number_of_rows + $this->sCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
         $this->hamPercent += log(($number_of_rows + $this->nsCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
->>>>>>> FETCH_HEAD
         
 		//OBJECTS
 		$bodyobject = new BodyThreat($keywords, $id, $this->sCount, $this->nsCount);
@@ -110,6 +104,7 @@ class Analyzer {
 
 		$addressobject = new AddressThreat($keywords, $id, $this->sCount, $this->nsCount);
 
+        //pass the Keword Count to parseContent
 		$subjectobject->parseContent($new, $id, $email->subject);
 
 		$addressobject->parseContent($new, $id, $email->address);
@@ -145,7 +140,20 @@ class Analyzer {
 	}
 
 	private function calcOverall($body, $subject, $address) {
-
+    /*
+    
+        $this->spamPercent += log(($number_of_rows + $this->sCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
+        $this->hamPercent += log(($number_of_rows + $this->nsCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
+        
+        $HSRatio = $this->hamPerent - $this->spamPercent;
+        
+        $threatLevel = $HSRation + $subjectobject->parseContent($new, $id, $email->subject) + $addressobject->parseContent($new, $id, $email->address) + $bodyobject->parseContent($new, $id, $email->body);
+        
+        if ($threatLevel < log(threshold))
+            spam
+        else
+            not spam
+     */
 	}
 
 }
