@@ -71,9 +71,7 @@ class Analyzer {
 			$stmt->execute(array(':kwID' => $kw->Keyword_ID));
 			$result = $stmt->fetch();
 			$kw->nsCount = $result->WordCount;
-		}*/
-		
-		
+		}*/	
 		
 		$sth_email = $mysql->prepare("INSERT INTO `Emails` (`ThresholdID`, `Body`, `Subject`, `EmailTo`, `EmailFrom`, `PercentageSpamFound`, `DateFound`, `DateReceived`) VALUES (:ThresholdID, :body, :subject, :emailTo, :emailFrom, :percentageSpamFound, :dateFound, :dateReceived)");
 
@@ -89,9 +87,14 @@ class Analyzer {
             $this->sCount += $kwObj->sCount;
             $this->nsCount += $kwObj->nsCount;
         }
-        //210 = Number of KW 
-        $this->spamPercent += log((210 + $this->sCount)/(420 + $this->sCount + $this->nsCount));
-        $this->hamPercent += log((210 + $this->nsCount)/(420 + $this->sCount + $this->nsCount));
+
+	$sql = "SELECT count(*) FROM `Keywords`"; 
+	$result = $con->prepare($sql); 
+	$result->execute(); 
+	$number_of_rows = $result->fetchColumn();
+
+        $this->spamPercent += log(($number_of_rows + $this->sCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
+        $this->hamPercent += log(($number_of_rows + $this->nsCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
         
 		//OBJECTS
 		$bodyobject = new BodyThreat($keywords, $id, $this->sCount, $this->nsCount);
@@ -106,7 +109,7 @@ class Analyzer {
 
 		$bodyobject->parseContent($new, $id, $email->body);
 
-		$spam = $bodyobject->checkThreat();
+		$body = $bodyobject->checkThreat($number_of_rows);
 
 		if($spam == 0) {
 
