@@ -32,11 +32,14 @@ class BodyThreat extends CalculateThreat{
     
     protected $emailID;
     
-    function __constructor($keywordArr){  // Constructor
+    function __constructor($keywordArr, $emailID, $sCount, $nsCount){  // Constructor
 		$this->keywords = $keywordArr;
+        $this->emailID = $emailID;
+        $this->sCount = $sCount;
+        $this->nsCount = $nsCount;
 	}
     
-    public function parseContent($keywordArr, $emailID, $s) {
+    public function parseContent($keywordArr, $emailID, $s, $kwCount) {
 
 		$this->keywords = $keywordArr;
 		$this->emailID = 1;
@@ -55,7 +58,8 @@ class BodyThreat extends CalculateThreat{
         } */
         
         $this->scanKeywords();
-
+        
+        return checkThreat($kwCount);
     }
     
     public function scanKeywords() {
@@ -125,54 +129,19 @@ class BodyThreat extends CalculateThreat{
 		
 	}
     
-    public function checkThreat(){
-        $this->sCount = 0;
-        $this->nsCount = 0;
+    public function checkThreat($kwCount){
         $this->hamPercent= 0;
         $this->spamPercent = 0;
         
-        foreach($this->keywords as $kwObj){
-            $this->sCount += $kwObj->sCount;
-            $this->nsCount += $kwObj->nsCount;
-        }
-        /*
-        foreach($this->foundKw as $kw){
-            echo "Keyword: " . $kw . nl2br("\n");
-        }
-        
-        foreach($this->keywords as $kwObj){
-            echo "Keyword: " . $kwObj->Keyword . " sCount: " . $kwObj->sCount . nl2br("\n");
-            echo "Keyword: " . $kwObj->Keyword . " nsCount: " . $kwObj->nsCount . nl2br("\n");
-        }
-        */
-        
+        //calculate P(D|S) and P(D|H)
         foreach($this->keywords as $kwObj){
             if(in_array($kwObj->Keyword, $this->foundKw)){
-                $this->spamPercent += log(($kwObj->sCount+1)/(210+$this->sCount));
-                //echo $kwObj->Keyword . " has occured " . $kwObj->nsCount . nl2br(" times\n");
-                $this->hamPercent += log(($kwObj->nsCount+1)/(210+$this->nsCount));
+                $this->spamPercent += log(($kwObj->sCount+1)/($kwCount+$this->sCount));
+                $this->hamPercent += log(($kwObj->nsCount+1)/($kwCount+$this->nsCount));
             }
         }
         
-        $this->spamPercent += log((210 + $this->sCount)/(420 + $this->sCount + $this->nsCount));
-        $this->hamPercent += log((210 + $this->nsCount)/(420 + $this->sCount + $this->nsCount));
-        
-        /*
-        echo "Body scount: " . $this->sCount . nl2br("\n"); 
-        echo "Body nscount: " . $this->nsCount . nl2br("\n");
-        echo "Body hamP: " . $this->hamPercent . nl2br("\n");
-        echo "Body spamP: " . $this->spamPercent . nl2br("\n");
-        echo "Overall threat: " . ($this->hamPercent - $this->spamPercent);
-        */
-        
-        //return ($this->hamPercent - $this->spamPercent);
-        
-        foreach($this->keywords as $kwObj){
-            if(in_array($kwObj->Keyword, $this->foundKw)){
-                return 0;
-            }
-        }
-        return 1;
+        return ($this->hamPercent - $this->spamPercent);
     }
     
     public function getSpamCount(){
