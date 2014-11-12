@@ -89,7 +89,8 @@ class Analyzer {
             $this->sCount += $kwObj->sCount;
             $this->nsCount += $kwObj->nsCount;
         }
-        //210 = Number of KW 
+        // Spam percentage of all emails in database
+        // NonSpam percentage of all emails in database
         $this->spamPercent += log((210 + $this->sCount)/(420 + $this->sCount + $this->nsCount));
         $this->hamPercent += log((210 + $this->nsCount)/(420 + $this->sCount + $this->nsCount));
         
@@ -116,7 +117,7 @@ class Analyzer {
 
 		}
 
-echo $spam;
+		echo $spam;
 
 		return 1;
 
