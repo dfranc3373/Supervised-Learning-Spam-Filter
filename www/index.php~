@@ -25,7 +25,7 @@ $spam = $sth->fetchColumn();
 				<a href="inbox.php?page=spam">
 
 <div class="list-group-item">
-					<span class="badge"><?php echo$spam ?></span>Spam
+					<span class="badge"><?php echo$spam; ?></span>Spam
 				</div>
 
 </a>

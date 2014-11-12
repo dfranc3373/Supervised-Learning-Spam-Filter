@@ -14,7 +14,7 @@ $emails;
 
 if($page == "inbox") {
 
-	$sth = $mysql->query("SELECT * FROM `Emails` WHERE `SpamFlag` = 0");
+	$sth = $mysql->query("SELECT * FROM `Emails` WHERE `SpamFlag` = 0 ORDER BY `Email_ID` DESC");
 
 	$sth->setFetchMode(PDO::FETCH_OBJ);
 
@@ -24,7 +24,7 @@ if($page == "inbox") {
 
 } else {
 
-	$sth = $mysql->query("SELECT * FROM `Emails` WHERE `SpamFlag` = 1");
+	$sth = $mysql->query("SELECT * FROM `Emails` WHERE `SpamFlag` = 1 ORDER BY `Email_ID` DESC");
 
 	$sth->setFetchMode(PDO::FETCH_OBJ);
 
@@ -40,7 +40,111 @@ if($page == "inbox") {
 				 <a class="list-group-item active"><?php echo strtoupper($page); ?>
 <?php if($page == "inbox") { ?>
 
-	<button type="button" class="btn btn-warning btn-sm" style="float: right;">Spam</button>
+<script type="text/javascript">
+
+function markAsSpam() {
+
+var id = [];
+
+var i = 0;
+
+$('input:checkbox').each(function () {
+       var sThisVal = (this.checked ? $(this).val() : "");
+
+	if(sThisVal == "on") {
+
+		id[i] = $(this).attr("id");
+
+		i++;
+
+	}
+
+  });
+
+if(id.length != 0) {
+
+	var data = {
+		
+		ids: id,
+		spam: 1
+
+		};
+
+	$.ajax({
+		type: "POST",
+		url: "toggleSpam.php",
+		data: data,
+		success: (function(info) {
+
+		alert(info);
+
+		location.reload();
+
+		})
+	});
+
+}
+
+}
+
+</script>
+
+	<button type="button" class="btn btn-warning btn-sm" style="float: right;" onclick="markAsSpam();">Spam</button>
+
+<?php } ?>
+
+<?php if($page == "spam") { ?>
+
+	<script type="text/javascript">
+
+function markAsNotSpam() {
+
+var id = [];
+
+var i = 0;
+
+$('input:checkbox').each(function () {
+       var sThisVal = (this.checked ? $(this).val() : "");
+
+	if(sThisVal == "on") {
+
+		id[i] = $(this).attr("id");
+
+		i++;
+
+	}
+
+  });
+
+if(id.length != 0) {
+
+	var data = {
+		
+		ids: id,
+		spam: 0
+
+		};
+
+	$.ajax({
+		type: "POST",
+		url: "toggleSpam.php",
+		data: data,
+		success: (function(info) {
+
+		alert(info);
+
+		location.reload();
+
+		})
+	});
+
+}
+
+}
+
+</script>
+
+	<button type="button" class="btn btn-warning btn-sm" style="float: right;" onclick="markAsNotSpam();">Not Spam</button>
 
 <?php } ?>
 
@@ -80,10 +184,9 @@ foreach($emails as $email) {
 
 <div align="center">
 
-<a href="email.php?id=<?php echo $email->Email_ID; ?>">
-
 <div class="list-group-item">
-					From: <?php echo $email->EmailFrom; ?> <strong><?php if(strlen($email->Subject) >= 10) {
+					<a href="email.php?id=<?php echo $email->Email_ID; ?>">
+From: <?php echo $email->EmailFrom; ?> <strong><?php if(strlen($email->Subject) >= 10) {
 
 echo substr($email->Subject, 0, 10);
 
@@ -93,15 +196,13 @@ echo $email->Subject;
 
 }
 
-?></strong>
+?></strong></a>
 
 <span class="badge" style="float: left;"><?php echo $email->Email_ID; ?></span>
 
-<input type="checkbox" style="float: right;">
+<input type="checkbox" style="float: right;" class="checkbox" id="<?php echo $email->Email_ID; ?>">
 
 				</div>
-
-</a>
 
 </div>
 

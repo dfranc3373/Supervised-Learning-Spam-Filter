@@ -105,12 +105,18 @@ class Analyzer {
 		$addressobject->parseContent($new, $id, $email->address);
 
 		$bodyobject->parseContent($new, $id, $email->body);
-		
-		
-		
-		$bodyobject->checkThreat();
-		
-		
+
+		$spam = $bodyobject->checkThreat();
+
+		if($spam == 0) {
+
+			$sth = $mysql->prepare("UPDATE `Emails` SET `SpamFlag` = '1' WHERE `Email_ID` = :EmailID");
+
+			$sth->execute(array(":EmailID" => $id));
+
+		}
+
+echo $spam;
 
 		return 1;
 

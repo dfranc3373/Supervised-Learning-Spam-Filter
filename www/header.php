@@ -61,20 +61,3 @@
 				</div>
 				
 			</nav>
-
-<?php
-if (strpos($_SERVER["REQUEST_URI"], "index.php") !== false) {
-
-?>
-
-<div class="jumbotron" style="background: url('http://i.dailymail.co.uk/i/pix/2012/10/17/article-2219188-158CE597000005DC-42_964x507.jpg') repeat fixed 0 0 rgba(0, 0, 0, 0); text-shadow: 0 0 15px rgba(0, 0, 0, 11), 0 -1px 0 rgba(0, 0, 0, 2);">
-      <div class="container" style="color: #FFFFFF;">
-        <h1>Email Client</h1>
-        <p style="width: 80%;">Welcome to the Learning Spam Filter API Example</p>
-        <p><a role="button" class="btn btn-primary btn-lg">Learn more »</a></p>
-      </div>
-    </div>
-
-<?php
-
-}?>
