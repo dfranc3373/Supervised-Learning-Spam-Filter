@@ -9,6 +9,14 @@ class Analyzer {
 
 	protected $threshold;
 	
+    protected $sCount;
+    
+    protected $nsCount;
+    
+    protected $spamPercent;
+    
+    protected $hamPercent;
+    
 	protected $bodyThreat;
 	
 	protected $subjectThreat;
@@ -77,12 +85,20 @@ class Analyzer {
 		
 		$id = $mysql->lastInsertId();
 		
+        foreach($keywords as $kwObj){
+            $this->sCount += $kwObj->sCount;
+            $this->nsCount += $kwObj->nsCount;
+        }
+        //210 = Number of KW 
+        $this->spamPercent += log((210 + $this->sCount)/(420 + $this->sCount + $this->nsCount));
+        $this->hamPercent += log((210 + $this->nsCount)/(420 + $this->sCount + $this->nsCount));
+        
 		//OBJECTS
-		$bodyobject = new BodyThreat($keywords, $id);
+		$bodyobject = new BodyThreat($keywords, $id, $this->sCount, $this->nsCount);
 
-		$subjectobject = new SubjectThreat($keywords, $id);
+		$subjectobject = new SubjectThreat($keywords, $id, $this->sCount, $this->nsCount);
 
-		$addressobject = new AddressThreat($keywords, $id);
+		$addressobject = new AddressThreat($keywords, $id, $this->sCount, $this->nsCount);
 
 		$subjectobject->parseContent($new, $id, $email->subject);
 
