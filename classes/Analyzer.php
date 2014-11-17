@@ -88,8 +88,18 @@ class Analyzer {
 			$sth_email->execute(array(':ThresholdID' => $this->threshold, ':body' => $email->body, ':subject' => $email->subject, ':emailTo' => "", ':emailFrom' => $email->address, ':percentageSpamFound' => '0', ':dateFound' => $date, ':dateReceived' => $date));
 		
 			//$new = $keywords;
-		
+
 			$id = $mysql->lastInsertId();
+
+        foreach($keywords as $kwObj){
+            $this->sCount += $kwObj->sCount;
+            $this->nsCount += $kwObj->nsCount;
+        }
+
+	$sql = "SELECT count(*) FROM `Keywords`"; 
+	$result = $con->prepare($sql); 
+	$result->execute(); 
+	$number_of_rows = $result->fetchColumn();
 
 		} else {
 
