@@ -87,6 +87,7 @@ class Analyzer {
             $this->sCount += $kwObj->sCount;
             $this->nsCount += $kwObj->nsCount;
         }
+
 	$sql = "SELECT count(*) FROM `Keywords`"; 
 	$result = $con->prepare($sql); 
 	$result->execute(); 
@@ -118,6 +119,7 @@ while($body->data == null || $subject->data == null || $address->data == null) {
 //$total = calcThreat
 
 		/*//OBJECTS
+
 		$bodyobject = new BodyThreat($keywords, $id, $this->sCount, $this->nsCount);
 
 		$subjectobject = new SubjectThreat($keywords, $id, $this->sCount, $this->nsCount);
