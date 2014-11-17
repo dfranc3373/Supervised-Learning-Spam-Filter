@@ -33,13 +33,17 @@ class Analyzer {
 
 	protected $address;
 
+	protected $check;
+
 	function __construct() { //constructor
 
 		$this->threshold = 1;
 	
 	}
 		
-	public function analyze($email, $threshold = 1) {
+	public function analyze($email, $threshold = 1, $eID = 0) {
+
+		$this->check = $eID;
 
 		error_reporting(E_ALL);
 		ini_set('display_errors', '1');
@@ -72,78 +76,104 @@ class Analyzer {
 			$result = $stmt->fetch();
 			$kw->nsCount = $result->WordCount;
 		}*/	
+
+		$id = 0;
+
+		if($this->check == 0) {
+
+			$sth_email = $mysql->prepare("INSERT INTO `Emails` (`ThresholdID`, `Body`, `Subject`, `EmailTo`, `EmailFrom`, `PercentageSpamFound`, `DateFound`, `DateReceived`) VALUES (:ThresholdID, :body, :subject, :emailTo, :emailFrom, :percentageSpamFound, :dateFound, :dateReceived)");
+
+			$date = date('Y-m-d H:i:s', time());
+
+			$sth_email->execute(array(':ThresholdID' => $this->threshold, ':body' => $email->body, ':subject' => $email->subject, ':emailTo' => "", ':emailFrom' => $email->address, ':percentageSpamFound' => '0', ':dateFound' => $date, ':dateReceived' => $date));
 		
-		$sth_email = $mysql->prepare("INSERT INTO `Emails` (`ThresholdID`, `Body`, `Subject`, `EmailTo`, `EmailFrom`, `PercentageSpamFound`, `DateFound`, `DateReceived`) VALUES (:ThresholdID, :body, :subject, :emailTo, :emailFrom, :percentageSpamFound, :dateFound, :dateReceived)");
-
-		$date = date('Y-m-d H:i:s', time());
-
-		$sth_email->execute(array(':ThresholdID' => $this->threshold, ':body' => $email->body, ':subject' => $email->subject, ':emailTo' => "", ':emailFrom' => $email->address, ':percentageSpamFound' => '0', ':dateFound' => $date, ':dateReceived' => $date));
+			//$new = $keywords;
 		
-		$new = $keywords;
-		
-		$id = $mysql->lastInsertId();
-		
-        foreach($keywords as $kwObj){
-            $this->sCount += $kwObj->sCount;
-            $this->nsCount += $kwObj->nsCount;
-        }
-	$sql = "SELECT count(*) FROM `Keywords`"; 
-	$result = $con->prepare($sql); 
-	$result->execute(); 
-	$number_of_rows = $result->fetchColumn();
+			$id = $mysql->lastInsertId();
 
-        // Spam percentage of all emails in database
-        // NonSpam percentage of all emails in database
-        $this->spamPercent += log(($number_of_rows + $this->sCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
-        $this->hamPercent += log(($number_of_rows + $this->nsCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
+		} else {
 
-$body = new BodyThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
+			$id = $this->check;
 
-$subject = new SubjectThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
+		}
 
-$address = new AddressThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
+		if($id != 0) {
 
-$body->start();
+			foreach($keywords as $kwObj) {
 
-$subject->start();
+			    $this->sCount += $kwObj->sCount;
+			    $this->nsCount += $kwObj->nsCount;
 
-$address->start();
+			}
 
-while($body->data == null || $subject->data == null || $address->data == null) {
+			$sql = "SELECT count(*) FROM `Keywords`"; 
+			$result = $con->prepare($sql); 
+			$result->execute(); 
+			$number_of_rows = $result->fetchColumn();
 
-	sleep(1);
+			// Spam percentage of all emails in database
+			// NonSpam percentage of all emails in database
+			$this->spamPercent += log(($number_of_rows + $this->sCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
+			$this->hamPercent += log(($number_of_rows + $this->nsCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
 
-}
+			$body = new BodyThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
 
-//$total = calcThreat
+			$subject = new SubjectThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
 
-		/*//OBJECTS
-		$bodyobject = new BodyThreat($keywords, $id, $this->sCount, $this->nsCount);
+			$address = new AddressThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
 
-		$subjectobject = new SubjectThreat($keywords, $id, $this->sCount, $this->nsCount);
+			$body->start();
 
-		$addressobject = new AddressThreat($keywords, $id, $this->sCount, $this->nsCount);
+			$subject->start();
 
-		//pass the Keword Count to parseContent
+			$address->start();
 
-		$subjectobject->parseContent($new, $id, $email->subject, $number_of_rows);
+			while($body->data == null || $subject->data == null || $address->data == null) {
+
+				sleep(1);
+
+			}
+
+			$total = calcThreat($body->data, $subject->data, $address->data);
+
+				/*//OBJECTS
+				$bodyobject = new BodyThreat($keywords, $id, $this->sCount, $this->nsCount);
+
+				$subjectobject = new SubjectThreat($keywords, $id, $this->sCount, $this->nsCount);
+
+				$addressobject = new AddressThreat($keywords, $id, $this->sCount, $this->nsCount);
+
+				//pass the Keword Count to parseContent
+
+				$subjectobject->parseContent($new, $id, $email->subject, $number_of_rows);
 
 
-		$addressobject->parseContent($new, $id, $email->address, $number_of_rows);
+				$addressobject->parseContent($new, $id, $email->address, $number_of_rows);
 
-		$bodyobject->parseContent($new, $id, $email->body, $number_of_rows);*/
+				$bodyobject->parseContent($new, $id, $email->body, $number_of_rows);*/
 
-		/*if($spam == 0) {
+				/*if($spam == 0) {
 
-			$sth = $mysql->prepare("UPDATE `Emails` SET `SpamFlag` = '1' WHERE `Email_ID` = :EmailID");
+					$sth = $mysql->prepare("UPDATE `Emails` SET `SpamFlag` = '1' WHERE `Email_ID` = :EmailID");
 
-			$sth->execute(array(":EmailID" => $id));
+					$sth->execute(array(":EmailID" => $id));
 
-		}*/
+				}*/
 
-		echo $spam;
+				if($total->spam && $this->check == 0) {
 
-		return 1;
+					$sth = $mysql->prepare("UPDATE `Emails` SET `SpamFlag` = '1' WHERE `Email_ID` = :EmailID");
+
+					$sth->execute(array(":EmailID" => $id));
+
+				}
+
+
+				return $total;
+
+		}
+
+		return 0;
 
 	}
 
@@ -160,20 +190,33 @@ while($body->data == null || $subject->data == null || $address->data == null) {
 	}
 
 	private function calcOverall($body, $subject, $address) {
-    /*
+
     
-        $this->spamPercent += log(($number_of_rows + $this->sCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
-        $this->hamPercent += log(($number_of_rows + $this->nsCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
+        //$this->spamPercent += log(($number_of_rows + $this->sCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
+        //$this->hamPercent += log(($number_of_rows + $this->nsCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
         
-        $HSRatio = $this->hamPerent - $this->spamPercent;
+        $HSRatio = $this->hamPercent - $this->spamPercent;
         
-        $threatLevel = $HSRation + $subjectobject->parseContent($new, $id, $email->subject) + $addressobject->parseContent($new, $id, $email->address) + $bodyobject->parseContent($new, $id, $email->body);
-        
-        if ($threatLevel < log(threshold))
-            spam
-        else
-            not spam
-     */
+        $threatLevel = $HSRation + $subject + $address + $body;
+
+	$obj = new stdClass;
+
+        if ($threatLevel < log($this->Threshold)) {
+
+		$obj->spam = true;
+
+		$obj->spamPercentage = 1/(e^$threatLevel);
+
+		return $obj;
+
+	} else {
+
+		$obj->spam = false;
+
+		$obj->spamPercentage = (e^$threatLevel);
+
+		return $obj;
+
 	}
 
 }
