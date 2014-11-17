@@ -60,7 +60,7 @@ class addressThreat extends CalculateThreat{
 				
 		$this->scanKeywords();
         
-        return checkThreat($kwCount);
+        return $this->checkThreat($kwCount);
 	}
 	
 	public function scanKeywords(){
