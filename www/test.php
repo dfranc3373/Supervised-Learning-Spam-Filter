@@ -1,5 +1,7 @@
 <?php
 
+	@session_start();
+
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
@@ -12,11 +14,13 @@ require_once("../classes/Analyzer.php");
 
 	$e->address = "techannounce@aschool.com";
 
-	$e->subject = "Free xanax!";
+	$e->subject = "Free xanax for the 100ths caller!";
 
-	$e->body = "prince xanax";
+	$e->body = "The fresh prince of belair!";
 
-	$analyzer->analyze($e);
+	$level = (isset($_SESSION['level']) && $_SESSION['level'] != "" ? $_SESSION['level'] : 1);
+
+	$analyzer->analyze($e, $level);
     
 	/*$e = new Email();
 

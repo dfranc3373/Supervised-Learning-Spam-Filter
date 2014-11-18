@@ -42,7 +42,7 @@ class BodyThreat extends CalculateThreat{
     public function parseContent($keywordArr, $emailID, $s, $kwCount) {
 
 		$this->keywords = $keywordArr;
-		$this->emailID = 1;
+		$this->emailID = $emailID;
 
         $this->parsedData = explode(' ', $s);
         
@@ -68,13 +68,20 @@ class BodyThreat extends CalculateThreat{
 		
         $arrLen = count($this->parsedData);
 
+	print_r($this->parsedData);
+
         //foreach($this->keywords as $kw){		// Left old code
 		foreach($this->parsedData as $word){
             //if(in_array($kw, $this->ParsedData)) {		// Left old code
             $holdID = $this->checkKeywordObject($word);
-            
+
+		$word = str_replace(' ', '', $word); 		// Eliminate spaces
+		$word = strtolower($word);
+
             if($holdID != -1 && !in_array($word, $this->foundKw)){
+
                 array_push($this->foundKw, $word);
+
                 
                 //$stmt = $mysql->prepare("SELECT `Keyword` FROM `KeywordCount` WHERE `Keyword_ID` = :keywordID");
 				//$stmt->execute(array(':keywordID' => $holdID));
@@ -129,18 +136,32 @@ class BodyThreat extends CalculateThreat{
 		
 	}
     
-    public function checkThreat($kwCount){
+        public function checkThreat($kwCount){
         $this->hamPercent= 0;
         $this->spamPercent = 0;
         
         //calculate P(D|S) and P(D|H)
         foreach($this->keywords as $kwObj){
+
+		$kwObj->Keyword = preg_replace('/\s+/', '', $kwObj->Keyword);	// Eliminate white spaces
+		$kwObj->Keyword = strtolower($kwObj->Keyword);
+
             if(in_array($kwObj->Keyword, $this->foundKw)){
+
+		echo "sCount " . $kwObj->sCount . " NSCount " . $kwObj->nsCount . " ";
+
                 $this->spamPercent += log(($kwObj->sCount+1)/($kwCount+$this->sCount));
+		
                 $this->hamPercent += log(($kwObj->nsCount+1)/($kwCount+$this->nsCount));
             }
         }
-        
+
+	//echo $kwCount . " Keyword Count";
+
+	//echo $this->spamPercent . " Spam";
+
+	//echo $this->hamPercent . " Ham";
+
         return ($this->hamPercent - $this->spamPercent);
     }
     

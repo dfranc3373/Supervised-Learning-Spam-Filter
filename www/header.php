@@ -1,3 +1,9 @@
+<?php
+
+@session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +36,39 @@
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/scripts.js"></script>
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+
+	    $('#level').change(function() {
+
+		var level = $("#level").val();
+
+		var data = {
+		
+			level: level
+
+		};
+
+		$.ajax({
+			type: "POST",
+			url: "setLevel.php",
+			data: data,
+			success: (function(info) {
+
+				alert(info);
+
+				location.reload();
+
+			})
+		})
+
+	    });
+	});
+
+</script>
+
 </head>
 
 <body>
@@ -51,6 +90,15 @@
 						</li>
 						<li>
 							 <a href="inbox.php?page=spam">Spam</a>
+						</li>
+						<li>
+							Level: 
+								<select name="level" id="level">
+								<option value="1" <?php if(isset($_SESSION['level']) && $_SESSION['level'] == 1) { ?> selected="true" <?php } ?>>1</option>
+								<option value="2" <?php if(isset($_SESSION['level']) && $_SESSION['level'] == 2) { ?> selected="true" <?php } ?>>2</option>
+								<option value="3" <?php if(isset($_SESSION['level']) && $_SESSION['level'] == 3) { ?> selected="true" <?php } ?>>3</option>
+								</select>
+
 						</li>
 					</ul>
 					<!--<form class="navbar-form navbar-right" role="search">

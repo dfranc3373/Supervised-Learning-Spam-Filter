@@ -24,7 +24,7 @@ class addressThreat extends CalculateThreat{
 
 	protected $parsedData = Array();
 	
-	protected $keywordsContained = Array();
+	protected $foundKw = Array();
 	
 	protected $emailID;
 	
@@ -38,7 +38,7 @@ class addressThreat extends CalculateThreat{
 	public function parseContent($keywordArr, $emailID, $s, $kwCount){
 	
 		$this->keywords = $keywordArr;
-		$this->emailID = 1;
+		$this->emailID = $emailID;
 	
 		$beforeAT = substr($s, 0, strpos($s, '@'));
 		$afterAT = substr($s, strpos($s, '@') + 1);
@@ -71,8 +71,8 @@ class addressThreat extends CalculateThreat{
 			
 			$holdID = $this->checkKeywordObject($word);
 			
-			if($holdID != -1 && !in_array($word, $this->keywordsContained)){
-				array_push($this->keywordsContained, $word);
+			if($holdID != -1 && !in_array($word, $this->foundKw)){
+				array_push($this->foundKw, $word);
 				
 				//$stmt = $mysql->prepare("SELECT `Keyword` FROM `KeywordCount` WHERE `Keyword_ID` = :keywordID");
 				//$stmt->execute(array(':keywordID' => $holdID));
@@ -85,7 +85,7 @@ class addressThreat extends CalculateThreat{
 			}
 		}
 		
-		//print_r($this->keywordsContained);
+		//print_r($this->foundKw);
 	}
 	
 	public function checkKeywordObject($word){

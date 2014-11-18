@@ -2,8 +2,6 @@
 
 require_once("../classes/sql.php");
 
-	$query = "UPDATE `Emails` SET `SpamFlag` = " . ($_POST['spam']) . " WHERE `Email_ID` = "
-
 foreach($_POST['ids'] as $id) {
 
 $sth = $mysql->prepare("UPDATE `Emails` SET `SpamFlag` = " . ($_POST['spam']) . " WHERE `Email_ID` = :Email_ID");

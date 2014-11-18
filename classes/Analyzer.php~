@@ -1,5 +1,7 @@
 <?php
 
+@session_start();
+
 require_once("BodyThreat.php");
 require_once("AddressThreat.php");
 require_once("SubjectThreat.php");
@@ -9,13 +11,13 @@ class Analyzer {
 
 	protected $threshold;
 	
-    protected $sCount;
-    
-    protected $nsCount;
-    
-    protected $spamPercent;
-    
-    protected $hamPercent;
+	    protected $sCount;
+	    
+	    protected $nsCount;
+	    
+	    protected $spamPercent;
+	    
+	    protected $hamPercent;
     
 	protected $bodyThreat;
 	
@@ -91,19 +93,9 @@ class Analyzer {
 
 			$id = $mysql->lastInsertId();
 
-        foreach($keywords as $kwObj){
-            $this->sCount += $kwObj->sCount;
-            $this->nsCount += $kwObj->nsCount;
-        }
-
-	$sql = "SELECT count(*) FROM `Keywords`"; 
-	$result = $con->prepare($sql); 
-	$result->execute(); 
-	$number_of_rows = $result->fetchColumn();
-
 		} else {
 
-			$id = $this->check;
+					$id = $this->check;
 
 		}
 
@@ -117,7 +109,7 @@ class Analyzer {
 			}
 
 			$sql = "SELECT count(*) FROM `Keywords`"; 
-			$result = $con->prepare($sql); 
+			$result = $mysql->prepare($sql); 
 			$result->execute(); 
 			$number_of_rows = $result->fetchColumn();
 
@@ -132,19 +124,15 @@ class Analyzer {
 
 			$address = new AddressThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
 
-			$body->start();
+			$body->run();
 
-			$subject->start();
+			$subject->run();
 
-			$address->start();
+			$address->run();
 
-			while($body->data == null || $subject->data == null || $address->data == null) {
+			$total = $this->calcOverall($body->data, $subject->data, $address->data);
 
-				sleep(1);
-
-			}
-
-			$total = calcThreat($body->data, $subject->data, $address->data);
+			print_r($total);
 
 				/*//OBJECTS
 				$bodyobject = new BodyThreat($keywords, $id, $this->sCount, $this->nsCount);
@@ -170,7 +158,7 @@ class Analyzer {
 
 				}*/
 
-				if($total->spam && $this->check == 0) {
+				if($total->spam == "true" && $this->check == 0) {
 
 					$sth = $mysql->prepare("UPDATE `Emails` SET `SpamFlag` = '1' WHERE `Email_ID` = :EmailID");
 
@@ -181,7 +169,7 @@ class Analyzer {
 
 				return $total;
 
-		}
+			}//if($id != 0)
 
 		return 0;
 
@@ -204,34 +192,36 @@ class Analyzer {
     
         //$this->spamPercent += log(($number_of_rows + $this->sCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
         //$this->hamPercent += log(($number_of_rows + $this->nsCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
-        
+    
         $HSRatio = $this->hamPercent - $this->spamPercent;
         
-        $threatLevel = $HSRation + $subject + $address + $body;
+        $threatLevel = $HSRatio + $subject + $address + $body;
 
 	$obj = new stdClass;
 
-        if ($threatLevel < log($this->Threshold)) {
+		if ($threatLevel < log($this->Threshold)) {
 
-		$obj->spam = true;
+			$obj->spam = "true";
 
-		$obj->spamPercentage = 1/(e^$threatLevel);
+			$obj->spamPercentage = (1/(exp($threatLevel))) - .001;
 
-		return $obj;
+			return $obj;
 
-	} else {
+		} else {
 
-		$obj->spam = false;
+			$obj->spam = "false";
 
-		$obj->spamPercentage = (e^$threatLevel);
+			$obj->spamPercentage = ((exp($threatLevel))) - .001;
 
-		return $obj;
+			return $obj;
+
+		}
 
 	}
 
-}
+}//end of Analyzer
 
-class BodyThread extends Thread {
+class BodyThread {
 
     public $keywords;
     public $id;
@@ -239,11 +229,11 @@ class BodyThread extends Thread {
     public $nsCount;
     public $email;
     public $number_of_rows;
-    public $data = null;
+    public $data;
      
     public function __construct($k, $i, $s, $ns, $e, $n) {
         $this->keywords = $k;
-	$this->id $i;
+	$this->id = $i;
 	$this->sCount = $s;
 	$this->nsCount = $ns;
 	$this->email = $e;
@@ -254,12 +244,14 @@ class BodyThread extends Thread {
 
 	$bodyobject = new BodyThreat($this->keywords, $this->id, $this->sCount, $this->nsCount);
 
-	$this->data = $bodyobject->parseContent($this->keywords, $this->id, $this->email->body, $this->number_of_rows);
+	$test = $bodyobject->parseContent($this->keywords, $this->id, $this->email, $this->number_of_rows);
+
+	$this->data = $test;
 
     }
 }
 
-class AddressThread extends Thread {
+class AddressThread {
 
     public $keywords;
     public $id;
@@ -271,7 +263,7 @@ class AddressThread extends Thread {
      
     public function __construct($k, $i, $s, $ns, $e, $n) {
         $this->keywords = $k;
-	$this->id $i;
+	$this->id = $i;
 	$this->sCount = $s;
 	$this->nsCount = $ns;
 	$this->email = $e;
@@ -282,12 +274,12 @@ class AddressThread extends Thread {
 
 	$object = new AddressThreat($this->keywords, $this->id, $this->sCount, $this->nsCount);
 
-	$this->data = $object->parseContent($this->keywords, $this->id, $this->email->body, $this->number_of_rows);
+	$this->data = $object->parseContent($this->keywords, $this->id, $this->email, $this->number_of_rows);
 
     }
 }
 
-class SubjectThread extends Thread {
+class SubjectThread {
 
     public $keywords;
     public $id;
@@ -299,7 +291,7 @@ class SubjectThread extends Thread {
      
     public function __construct($k, $i, $s, $ns, $e, $n) {
         $this->keywords = $k;
-	$this->id $i;
+	$this->id = $i;
 	$this->sCount = $s;
 	$this->nsCount = $ns;
 	$this->email = $e;
@@ -310,7 +302,7 @@ class SubjectThread extends Thread {
 
 	$object = new SubjectThreat($this->keywords, $this->id, $this->sCount, $this->nsCount);
 
-	$this->data = $object->parseContent($this->keywords, $this->id, $this->email->body, $this->number_of_rows);
+	$this->data = $object->parseContent($this->keywords, $this->id, $this->email, $this->number_of_rows);
 
     }
 }
