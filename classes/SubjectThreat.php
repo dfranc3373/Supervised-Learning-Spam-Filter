@@ -42,6 +42,8 @@ class SubjectThreat extends CalculateThreat{
 		$this->emailID = $emailID;		
 		$this->parsedData = explode(' ', $s);
 		
+		// Old Code
+		// -------------------------------------------------------------
 		/*foreach($this->parsedData as $w) {
 			$w = str_replace(' ', '', $w); 		// Eliminate spaces
 			$w = strtolower($w);
@@ -52,6 +54,7 @@ class SubjectThreat extends CalculateThreat{
 			$kwObj->Keyword = strtolower($kwObj->Keyword);
 			//echo "Subject kw: " . $kwObj->Keyword;
 		} */
+		// -------------------------------------------------------------
 		
 		$this->scanKeywords();
         
@@ -70,14 +73,17 @@ class SubjectThreat extends CalculateThreat{
 				// echo $holdID;    // Debugging code
 				array_push($this->foundKw, $word);
 				
+				// Old Code
+				// -------------------------------------------------------------
 				//$stmt = $mysql->prepare("SELECT `Keyword` FROM `KeywordCount` WHERE `Keyword_ID` = :keywordID");
 				//$stmt->execute(array(':keywordID' => $holdID));
 				//$result = $stmt->fetchAll();
 				//if($result != null){
-					$stmt = $mysql->prepare("INSERT INTO `KeywordCount` (Email_ID, Keyword_ID, Runtime) VALUES(:emailID, :keywordID, :runtime)");
-					$stmt->execute(array(':emailID' => $this->emailID, ':keywordID' => $holdID, ':runtime' => date('Y-m-d H:i:s', time())));
 				//}
 				//echo "Subject ID: " . $holdID;
+				// -------------------------------------------------------------
+				$stmt = $mysql->prepare("INSERT INTO `KeywordCount` (Email_ID, Keyword_ID, Runtime) VALUES(:emailID, :keywordID, :runtime)");
+				$stmt->execute(array(':emailID' => $this->emailID, ':keywordID' => $holdID, ':runtime' => date('Y-m-d H:i:s', time())));
 			}
 		}
 		//print_r($this->foundKw);

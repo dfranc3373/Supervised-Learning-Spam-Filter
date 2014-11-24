@@ -83,7 +83,7 @@ class Analyzer {
 
 		$id = 0;
 
-		if($this->check == 0) {
+		if($this->check == 0) {		// If new email, insert into database
 
 			$sth_email = $mysql->prepare("INSERT INTO `Emails` (`ThresholdID`, `Body`, `Subject`, `EmailTo`, `EmailFrom`, `PercentageSpamFound`, `DateFound`, `DateReceived`) VALUES (:ThresholdID, :body, :subject, :emailTo, :emailFrom, :percentageSpamFound, :dateFound, :dateReceived)");
 
@@ -103,7 +103,7 @@ class Analyzer {
 
 		if($id != 0) {
 
-			foreach($keywords as $kwObj) {
+			foreach($keywords as $kwObj) {		// Get the count of spam/not spam count for all keywords
 
 			    $this->sCount += $kwObj->sCount;
 			    $this->nsCount += $kwObj->nsCount;
@@ -128,8 +128,8 @@ class Analyzer {
             
             $attachment = new BodyThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
             
-            if(strlen($email->attachment) > 0){
-                $attachment->run();
+            if(strlen($email->attachment) > 0){	
+                $attachment->run();				// Attachments are passed to the API as strings
             }
 
 			$body->run();
@@ -142,7 +142,9 @@ class Analyzer {
 			$total = $this->calcOverall($body->data, $subject->data, $address->data, $attachment->data);
 
 			print_r($total);
-
+			
+			// Old Code
+			// --------------------------------------------------------------------------------------
 				/*//OBJECTS
 				$bodyobject = new BodyThreat($keywords, $id, $this->sCount, $this->nsCount);
 
@@ -166,8 +168,11 @@ class Analyzer {
 					$sth->execute(array(":EmailID" => $id));
 
 				}*/
+			// ------------------------------------------------------------------------------------------	
 
 				if($total->spam == "true" && $this->check == 0) {
+				
+					// Update spamFlag in database
 
 					$sth = $mysql->prepare("UPDATE `Emails` SET `SpamFlag` = '1' WHERE `Email_ID` = :EmailID");
 
@@ -178,7 +183,7 @@ class Analyzer {
 
 				return $total;
 
-			}//if($id != 0)
+			}
 
 		return 0;
 
@@ -198,7 +203,8 @@ class Analyzer {
 
 	private function calcOverall($body, $subject, $address, $attachment) {
 
-    
+    	// Old Code
+    	// --------
         //$this->spamPercent += log(($number_of_rows + $this->sCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
         //$this->hamPercent += log(($number_of_rows + $this->nsCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
     
@@ -206,7 +212,7 @@ class Analyzer {
         
         $threatLevel = $HSRatio + $subject + $address + $body + $attachment;
         
-	$obj = new stdClass;
+		$obj = new stdClass;
 
 		if ($threatLevel < log($this->Threshold)) {
 
