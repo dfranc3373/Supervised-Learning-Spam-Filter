@@ -126,10 +126,10 @@ class Analyzer {
 
 			$address = new AddressThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
             
-            if(strlen($email->attachment) > 0){
+            $attachment = new BodyThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
             
-                $this->attachment = new BodyThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
-                $this->attachment->run();
+            if(strlen($email->attachment) > 0){
+                $attachment->run();
             }
 
 			$body->run();
@@ -139,7 +139,7 @@ class Analyzer {
 			$address->run();
 			
 
-			$total = $this->calcOverall($body->data, $subject->data, $address->data);
+			$total = $this->calcOverall($body->data, $subject->data, $address->data, $attachment->data);
 
 			print_r($total);
 
@@ -196,7 +196,7 @@ class Analyzer {
 		
 	}
 
-	private function calcOverall($body, $subject, $address) {
+	private function calcOverall($body, $subject, $address, $attachment) {
 
     
         //$this->spamPercent += log(($number_of_rows + $this->sCount)/(($number_of_rows * 2) + $this->sCount + $this->nsCount));
@@ -204,14 +204,8 @@ class Analyzer {
     
         $HSRatio = $this->hamPercent - $this->spamPercent;
         
-        $threatLevel = $HSRatio + $subject + $address + $body;
+        $threatLevel = $HSRatio + $subject + $address + $body + $attachment;
         
-        if(strlen($email->attachment) > 0){
-        
-        	$threatLevel += $this->attachment->data;
-        	
-        }
-
 	$obj = new stdClass;
 
 		if ($threatLevel < log($this->Threshold)) {
