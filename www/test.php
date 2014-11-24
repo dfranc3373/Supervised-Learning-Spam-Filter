@@ -17,6 +17,8 @@ require_once("../classes/Analyzer.php");
 	$e->subject = "Free xanax for the 100ths caller!";
 
 	$e->body = "The fresh prince of belair!";
+	
+	$e->attchment = "Free techannounce prince";
 
 	$level = (isset($_SESSION['level']) && $_SESSION['level'] != "" ? $_SESSION['level'] : 1);
 
