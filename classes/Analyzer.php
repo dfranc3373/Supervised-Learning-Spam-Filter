@@ -129,6 +129,7 @@ class Analyzer {
 			$subject->run();
 
 			$address->run();
+			
 
 			$total = $this->calcOverall($body->data, $subject->data, $address->data);
 
@@ -196,6 +197,12 @@ class Analyzer {
         $HSRatio = $this->hamPercent - $this->spamPercent;
         
         $threatLevel = $HSRatio + $subject + $address + $body;
+        
+        if(strlen($email->attachment) > 0){
+        
+        	$threatLevel += $this->attachment->data;
+        	
+        }
 
 	$obj = new stdClass;
 
@@ -233,11 +240,11 @@ class BodyThread {
      
     public function __construct($k, $i, $s, $ns, $e, $n) {
         $this->keywords = $k;
-	$this->id = $i;
-	$this->sCount = $s;
-	$this->nsCount = $ns;
-	$this->email = $e;
-	$this->number_of_rows = $n;
+		$this->id = $i;
+		$this->sCount = $s;
+		$this->nsCount = $ns;
+		$this->email = $e;
+		$this->number_of_rows = $n;
     }
      
     public function run() {
