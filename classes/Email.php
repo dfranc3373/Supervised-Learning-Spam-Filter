@@ -7,6 +7,8 @@ class Email {
 	public $subject;
 
 	public $address;
+    
+    public $attachment;
 	
 	function __construct() { //constructor
 

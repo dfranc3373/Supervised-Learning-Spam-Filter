@@ -9,15 +9,17 @@ require_once("sql.php");
 
 class Analyzer {
 
+    protected $attachment;
+
 	protected $threshold;
 	
-	    protected $sCount;
+    protected $sCount;
 	    
-	    protected $nsCount;
+	protected $nsCount;
 	    
-	    protected $spamPercent;
+	protected $spamPercent;
 	    
-	    protected $hamPercent;
+	protected $hamPercent;
     
 	protected $bodyThreat;
 	
@@ -123,6 +125,12 @@ class Analyzer {
 			$subject = new SubjectThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
 
 			$address = new AddressThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
+            
+            if(strlen($email->attachment) > 0){
+            
+                $this->attachment = new BodyThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
+                $this->attachment->run();
+            }
 
 			$body->run();
 
