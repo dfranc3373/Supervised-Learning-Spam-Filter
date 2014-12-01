@@ -46,6 +46,9 @@ class BodyThreat extends CalculateThreat{
 
         $this->parsedData = explode(' ', $s);
         
+        
+        // Old Code
+        // -------------------------------------------------------------
         /*foreach($this->parsedData as $w){
         	$w = str_replace(' ', '', $w);		// Eliminate spaces
         	$w = strtolower($w);
@@ -56,6 +59,7 @@ class BodyThreat extends CalculateThreat{
         	$kwObj->Keyword = strtolower($kwObj->Keyword);
         	//echo "Body kw: " . $kwObj->Keyword;
         } */
+        // -------------------------------------------------------------
         
         $this->scanKeywords();
         
@@ -82,15 +86,18 @@ class BodyThreat extends CalculateThreat{
 
                 array_push($this->foundKw, $word);
 
-                
+                // Old Code
+                // -------------------------------------------------------------
                 //$stmt = $mysql->prepare("SELECT `Keyword` FROM `KeywordCount` WHERE `Keyword_ID` = :keywordID");
 				//$stmt->execute(array(':keywordID' => $holdID));
 				//$result = $stmt->fetchAll();
 				//if($result != null){
-					$stmt = $mysql->prepare("INSERT INTO `KeywordCount` (Email_ID, Keyword_ID, Runtime) VALUES(:emailID, :keywordID, :runtime)");
-					$stmt->execute(array(':emailID' => $this->emailID, ':keywordID' => $holdID, ':runtime' => date('Y-m-d H:i:s', time())));
 				//}
 				//echo "Body ID: " . $holdID;
+				// -------------------------------------------------------------
+				
+				$stmt = $mysql->prepare("INSERT INTO `KeywordCount` (Email_ID, Keyword_ID, Runtime) VALUES(:emailID, :keywordID, :runtime)");
+				$stmt->execute(array(':emailID' => $this->emailID, ':keywordID' => $holdID, ':runtime' => date('Y-m-d H:i:s', time())));
             }
 
         }
@@ -136,25 +143,25 @@ class BodyThreat extends CalculateThreat{
 		
 	}
     
-        public function checkThreat($kwCount){
-        $this->hamPercent= 0;
-        $this->spamPercent = 0;
-        
-        //calculate P(D|S) and P(D|H)
-        foreach($this->keywords as $kwObj){
+	public function checkThreat($kwCount){
+	$this->hamPercent= 0;
+	$this->spamPercent = 0;
+	
+	//calculate P(D|S) and P(D|H)
+	foreach($this->keywords as $kwObj){
 
-		$kwObj->Keyword = preg_replace('/\s+/', '', $kwObj->Keyword);	// Eliminate white spaces
-		$kwObj->Keyword = strtolower($kwObj->Keyword);
+	$kwObj->Keyword = preg_replace('/\s+/', '', $kwObj->Keyword);	// Eliminate white spaces
+	$kwObj->Keyword = strtolower($kwObj->Keyword);
 
-            if(in_array($kwObj->Keyword, $this->foundKw)){
+		if(in_array($kwObj->Keyword, $this->foundKw)){
 
-		echo "sCount " . $kwObj->sCount . " NSCount " . $kwObj->nsCount . " ";
+			echo "sCount " . $kwObj->sCount . " NSCount " . $kwObj->nsCount . " ";
 
-                $this->spamPercent += log(($kwObj->sCount+1)/($kwCount+$this->sCount));
-		
-                $this->hamPercent += log(($kwObj->nsCount+1)/($kwCount+$this->nsCount));
-            }
-        }
+			$this->spamPercent += log(($kwObj->sCount+1)/($kwCount+$this->sCount));
+	
+			$this->hamPercent += log(($kwObj->nsCount+1)/($kwCount+$this->nsCount));
+		}
+	}
 
 	//echo $kwCount . " Keyword Count";
 
