@@ -120,9 +120,9 @@ class Analyzer {
 
 			$body = new BodyThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
 
-			$subject = new SubjectThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
+			$subject = new SubjectThread($keywords, $id, $this->sCount, $this->nsCount, $email->subject, $number_of_rows);
 
-			$address = new AddressThread($keywords, $id, $this->sCount, $this->nsCount, $email->body, $number_of_rows);
+			$address = new AddressThread($keywords, $id, $this->sCount, $this->nsCount, $email->address, $number_of_rows);
 
 			$body->run();
 
